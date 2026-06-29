@@ -1,3 +1,4 @@
+manifests
 node_modules
 .dockerignore
 .env
