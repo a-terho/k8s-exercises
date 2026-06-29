@@ -1,17 +1,16 @@
 # todo-app
 
 To run the application, make sure the Kubernetes cluster (like local `k3d` cluster) is up and running.  
-Make sure that cluster exposes port 8080 that maps to port 30080 in the nodes, like by using this command:
+Make sure that cluster exposes port 8080 that maps to port 80 for HTTP requests, like by using this command:
 
 ```bash
-k3d cluster create --port 8080:30080@agent:0 --agents 2
+k3d cluster create --port 8080:80@loadbalancer --agents 2
 ```
 
-Then with `kubectl` installed, create deployment and service with:
+Then with `kubectl` installed, apply all manifests (deployment, service and ingress) with:
 
 ```bash
-kubectl apply -f manifests/deployment.yml
-kubectl apply -f manifests/service.yml
+kubectl apply -f manifests
 ```
 
 To check that the pod is running, use:
