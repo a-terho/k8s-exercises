@@ -8,13 +8,16 @@
   "main": "index.ts",
   "scripts": {
     "start": "node index.ts",
-    "dev": "node --watch index.ts"
+    "dev": "node --watch index.ts",
+    "check": "tsc --noEmit"
   },
   "dependencies": {
     "dotenv": "^17.4.2",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "pug": "^3.0.4"
   },
   "devDependencies": {
-    "@types/express": "^5.0.6"
+    "@types/express": "^5.0.6",
+    "typescript": "^6.0.3"
   }
 }

@@ -14,4 +14,11 @@ To check that the pod is running, use:
 kubectl logs -f deployment/todo-app-dep
 ```
 
-The logs should have printed by default: Server started in port 3000
+Deployment manifest sets environment variable PORT to 3003.  
+The logs should have printed: Server started in port 3003
+
+Connect to it locally from [http://localhost:3003/](http://localhost:3003/) with:
+
+```bash
+kubectl port-forward deployment/todo-app-dep 3003:3003
+```

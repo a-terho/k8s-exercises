@@ -14,4 +14,7 @@ spec:
     spec:
       containers:
         - name: todo-app
-          image: alterho/todo-app:1.4
+          image: alterho/todo-app:1.5
+          env:
+            - name: PORT
+              value: '3003'
