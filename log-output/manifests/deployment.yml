@@ -6,12 +6,15 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: log-output-dep
+      app: log-output
   template:
     metadata:
       labels:
-        app: log-output-dep
+        app: log-output
     spec:
       containers:
         - name: log-output
-          image: alterho/log-output
+          image: alterho/log-output:1.7
+          env:
+            - name: PORT
+              value: '3003'
