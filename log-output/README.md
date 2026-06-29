@@ -5,7 +5,7 @@ To run the application, make sure the Kubernetes cluster (like local `k3d` clust
 Then with `kubectl` installed, create deployment with:
 
 ```bash
-kubectl create deployment log-output-dep --image=alterho/log-output
+kubectl apply -f manifests/deployment.yml
 ```
 
 To check that the pod is running, use:
