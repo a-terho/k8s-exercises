@@ -1,5 +1,0 @@
-manifests
-node_modules
-.dockerignore
-Dockerfile
-README.md

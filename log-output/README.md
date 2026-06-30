@@ -13,16 +13,15 @@ Then with `kubectl` installed, apply all manifests (deployment, service and ingr
 kubectl apply -f manifests
 ```
 
-To check that the pod is running, use:
+To check that the pod is running all containers, use:
 
 ```bash
-kubectl logs -f deployment/log-output-dep
+kubectl logs -f deployment/log-output-dep --all-containers=true
 ```
 
-Deployment manifest sets environment variable PORT to 3003.  
-The logs should have printed: Server started in port 3003
+The logs should have printed: "Server started in port 3000" and there should a stream of timestamps.
 
-Check the service status with from [http://localhost:8081/status](http://localhost:8081/status)
+Read the log file the pod creates from [http://localhost:8081/](http://localhost:8081/)
 
 ---
 

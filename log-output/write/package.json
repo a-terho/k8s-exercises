@@ -1,5 +1,5 @@
 {
-  "name": "Log output",
+  "name": "Log output write",
   "version": "1.0.0",
   "description": "",
   "license": "ISC",
@@ -8,8 +8,5 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
-  },
-  "dependencies": {
-    "express": "^5.2.1"
   }
 }

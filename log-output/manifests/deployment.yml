@@ -12,9 +12,17 @@ spec:
       labels:
         app: log-output
     spec:
+      volumes:
+        - name: shared-files
+          emptyDir: {}
       containers:
-        - name: log-output
-          image: alterho/log-output:1.7
-          env:
-            - name: PORT
-              value: '3003'
+        - name: log-output-write
+          image: alterho/log-output:1.10-write
+          volumeMounts:
+            - name: shared-files
+              mountPath: /usr/src/app/files
+        - name: log-output-read
+          image: alterho/log-output:1.10-read
+          volumeMounts:
+            - name: shared-files
+              mountPath: /usr/src/app/files

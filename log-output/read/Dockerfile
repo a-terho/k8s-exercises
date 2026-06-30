@@ -9,6 +9,4 @@ RUN --mount=type=bind,source=package.json,target=package.json \
 
 COPY . .
 
-USER node
-
 CMD ["npm", "start"]
