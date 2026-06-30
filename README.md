@@ -14,3 +14,4 @@ Sisältönä Kubernetes-kurssin harjoitukset. Suurin osa tekstistä on englannik
 - [1.8. The project, step 5](https://github.com/a-terho/k8s-exercises/tree/1.8/todo-app)
 - [1.9. More services](https://github.com/a-terho/k8s-exercises/tree/1.9/log-output)
 - [1.10. Even more services](https://github.com/a-terho/k8s-exercises/tree/1.10/log-output)
+- [1.11. Persisting data](https://github.com/a-terho/k8s-exercises/tree/1.11/log-output)

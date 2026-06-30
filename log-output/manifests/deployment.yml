@@ -13,16 +13,21 @@ spec:
         app: log-output
     spec:
       volumes:
-        - name: shared-files
+        - name: shared-tmp-files
           emptyDir: {}
+        - name: persistent-files
+          persistentVolumeClaim:
+            claimName: local-volume1-claim
       containers:
         - name: log-output-write
-          image: alterho/log-output:1.10-write
+          image: alterho/log-output:1.11-write
           volumeMounts:
-            - name: shared-files
-              mountPath: /usr/src/app/files
+            - name: shared-tmp-files
+              mountPath: /usr/src/app/tmp
         - name: log-output-read
-          image: alterho/log-output:1.10-read
+          image: alterho/log-output:1.11-read
           volumeMounts:
-            - name: shared-files
+            - name: shared-tmp-files
+              mountPath: /usr/src/app/tmp
+            - name: persistent-files
               mountPath: /usr/src/app/files

@@ -1,7 +1,7 @@
 const fs = require('node:fs').promises;
 const path = require('node:path');
 
-const filePath = path.join('/', 'usr', 'src', 'app', 'files', 'app.log');
+const filePath = path.join('/', 'usr', 'src', 'app', 'tmp', 'app.log');
 
 // generate random string once (strips 0. from random number)
 const randomString = Math.random().toString(36).slice(2);

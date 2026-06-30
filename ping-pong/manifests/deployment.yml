@@ -12,9 +12,16 @@ spec:
       labels:
         app: ping-pong
     spec:
+      volumes:
+        - name: persistent-files
+          persistentVolumeClaim:
+            claimName: local-volume1-claim
       containers:
         - name: ping-pong
-          image: alterho/ping-pong:1.9
+          image: alterho/ping-pong:1.11
           env:
             - name: PORT
               value: '3001'
+          volumeMounts:
+            - name: persistent-files
+              mountPath: /usr/src/app/files
