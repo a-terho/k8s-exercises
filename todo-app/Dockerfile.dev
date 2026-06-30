@@ -1,0 +1,29 @@
+# ============================================
+# Development Dockerfile for Next.js
+# ============================================
+ARG NODE_VERSION=alpine
+
+FROM node:${NODE_VERSION} AS dev
+
+WORKDIR /app
+
+RUN --mount=type=bind,source=package.json,target=package.json \
+    --mount=type=bind,source=package-lock.json,target=package-lock.json \
+    --mount=type=cache,target=/root/.npm \
+    if [ -f package-lock.json ]; then \
+      npm ci --no-audit --no-fund; \
+    else \
+      echo "No lockfile found." && exit 1; \
+    fi
+
+COPY . .
+
+ENV WATCHPACK_POLLING=true
+ENV HOSTNAME="0.0.0.0"
+
+RUN chown -R node:node /app
+USER node
+
+EXPOSE 3000
+
+CMD ["npm", "run", "dev"]

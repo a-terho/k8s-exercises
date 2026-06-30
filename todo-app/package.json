@@ -1,23 +1,26 @@
 {
   "name": "todo app",
   "version": "1.0.0",
-  "description": "",
-  "license": "ISC",
-  "author": "",
-  "type": "module",
-  "main": "index.ts",
+  "private": true,
   "scripts": {
-    "start": "node index.ts",
-    "dev": "node --watch index.ts",
-    "check": "tsc --noEmit"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
   },
   "dependencies": {
-    "dotenv": "^17.4.2",
-    "express": "^5.2.1",
-    "pug": "^3.0.4"
+    "next": "16.2.9",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
   },
   "devDependencies": {
-    "@types/express": "^5.0.6",
-    "typescript": "^6.0.3"
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.9",
+    "tailwindcss": "^4",
+    "typescript": "^5"
   }
 }

@@ -1,0 +1,30 @@
+services:
+  # nextjs-prod-standalone:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   image: todo-app:prod
+  #   container_name: todo-app-prod
+  #   ports:
+  #     - '3000:3000'
+
+  nextjs-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: todo-app:dev
+    container_name: todo-app-dev
+    ports:
+      - '3000:3000'
+    environment:
+      - WATCHPACK_POLLING=true
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /app
+          ignore:
+            - node_modules/
+            - .next/
+        - action: rebuild
+          path: package.json

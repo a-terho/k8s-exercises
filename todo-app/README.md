@@ -19,7 +19,13 @@ To check that the pod is running, use:
 kubectl logs -f deployment/todo-app-dep
 ```
 
-Deployment manifest sets environment variable PORT to 3003.  
-The logs should have printed: Server started in port 3003
+The logs should have printed:
+
+```plaintext
+▲ Next.js *.*.*
+- Local:         http://localhost:3000
+- Network:       http://0.0.0.0:3000
+✓ Ready in *ms
+```
 
 Connect to the service locally from [http://localhost:8080/](http://localhost:8080/)
