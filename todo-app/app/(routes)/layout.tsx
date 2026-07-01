@@ -13,7 +13,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <h1 className="flex place-content-center text-4xl my-6">Todo App</h1>
+        {children}
+      </body>
     </html>
   );
 }

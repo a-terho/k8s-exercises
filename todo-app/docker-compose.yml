@@ -1,12 +1,12 @@
 services:
-  # nextjs-prod-standalone:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   image: todo-app:prod
-  #   container_name: todo-app-prod
-  #   ports:
-  #     - '3000:3000'
+  nextjs-prod-standalone:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: todo-app:prod
+    container_name: todo-app-prod
+    ports:
+      - '3000:3000'
 
   nextjs-dev:
     build:

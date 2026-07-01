@@ -12,6 +12,14 @@ spec:
       labels:
         app: todo-app
     spec:
+      volumes:
+        - name: app-cache
+          persistentVolumeClaim:
+            claimName: local-volume1-claim
       containers:
         - name: todo-app
           image: alterho/todo-app:1.12
+          volumeMounts:
+            - name: app-cache
+              mountPath: /app/cache
+              subPath: todo-app # use a subfolder inside the PV

@@ -7,7 +7,14 @@ Make sure that cluster exposes port 8080 that maps to port 80 for HTTP requests,
 k3d cluster create --port 8080:80@loadbalancer --agents 2
 ```
 
-Then with `kubectl` installed, apply all manifests (deployment, service and ingress) with:
+In addition with `kubectl` installed, initialize local persistent volume in your `k3d` cluster with:
+
+```bash
+docker exec k3d-k3s-default-agent-0 mkdir -p /tmp/volume1/todo-app
+kubectl apply -f ../pvs
+```
+
+Then, apply all manifests (deployment, service and ingress) with:
 
 ```bash
 kubectl apply -f manifests
