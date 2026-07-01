@@ -22,3 +22,27 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@layer components {
+  .card {
+    @apply bg-gray-200 dark:bg-gray-800 p-2 border-l-4 border-l-green-500 rounded;
+  }
+}
+
+@layer base {
+  h1 {
+    @apply text-4xl my-6;
+  }
+
+  h2 {
+    @apply text-2xl my-4 font-bold;
+  }
+
+  button {
+    @apply cursor-pointer;
+  }
+
+  input[type='text'] {
+    @apply outline-none focus:ring-2;
+  }
+}
