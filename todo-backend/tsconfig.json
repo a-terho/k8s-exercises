@@ -5,7 +5,7 @@
     "moduleResolution": "nodenext",
     "outDir": "dist",
     "rootDir": "src",
-    "erasableSyntaxOnly": true,
+    "allowJs": true,
     "verbatimModuleSyntax": true,
     "allowImportingTsExtensions": true,
     "rewriteRelativeImportExtensions": true,

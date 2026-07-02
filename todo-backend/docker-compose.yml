@@ -1,0 +1,28 @@
+services:
+  express-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: todo-backend:prod
+    container_name: todo-backend-prod
+    ports:
+      - '4000:3000'
+
+  express-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: todo-backend:dev
+    container_name: todo-backend-dev
+    ports:
+      - '4000:3000'
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /src
+          ignore:
+            - node_modules/
+            - dist/
+        - action: rebuild
+          path: package.json

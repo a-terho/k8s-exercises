@@ -14,11 +14,7 @@
   RUN --mount=type=bind,source=package.json,target=package.json \
       --mount=type=bind,source=package-lock.json,target=package-lock.json \
       --mount=type=cache,target=/root/.npm \
-      if [ -f package-lock.json ]; then \
-        npm ci --no-audit --no-fund; \
-      else \
-        echo "No lockfile found." && exit 1; \
-      fi
+      npm ci --no-audit --no-fund
 
   # ============================================
   # Stage 2: Build Next.js application in standalone mode
@@ -40,11 +36,7 @@
   ENV NEXT_TELEMETRY_DISABLED=1
 
   # Build Next.js application
-  RUN if [ -f package-lock.json ]; then \
-        npm run build; \
-      else \
-        echo "No lockfile found." && exit 1; \
-      fi
+  RUN npm run build
 
   # ============================================
   # Stage 3: Run Next.js application
@@ -65,8 +57,7 @@
   COPY --from=builder --chown=node:node /app/public ./public
 
   # Set the correct permission for prerender cache
-  RUN mkdir .next
-  RUN chown node:node .next
+  RUN mkdir .next && chown node:node .next
 
   # Automatically leverage output traces to reduce image size
   # https://nextjs.org/docs/advanced-features/output-file-tracing

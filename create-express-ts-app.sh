@@ -25,7 +25,7 @@ EOF
 npm install express dotenv
 
 # Dev deps
-npm install -D typescript @types/node @types/express
+npm install -D typescript tsx @types/node @types/express
 
 mkdir src
 
@@ -39,7 +39,7 @@ cat > tsconfig.json << 'EOF'
     "moduleResolution": "nodenext",
     "outDir": "dist",
     "rootDir": "src",
-    "erasableSyntaxOnly": true,
+    "allowJs": true,
     "verbatimModuleSyntax": true,
     "allowImportingTsExtensions": true,
     "rewriteRelativeImportExtensions": true,

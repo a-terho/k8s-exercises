@@ -1,8 +1,6 @@
-# ============================================
-# Development Dockerfile for Next.js
-# ============================================
 ARG NODE_VERSION=alpine
 
+# Development stage: install all dependencies and serve with hot-reload
 FROM node:${NODE_VERSION} AS dev
 
 WORKDIR /app
@@ -13,14 +11,12 @@ RUN --mount=type=bind,source=package.json,target=package.json \
     npm ci --no-audit --no-fund
 
 # .dockerignore must include node_modules/ so dependencies will not be overridden
-COPY . .
+COPY --chown=node:node . .
 
-ENV WATCHPACK_POLLING=true
-ENV HOSTNAME="0.0.0.0"
-
-RUN mkdir -p /app/cache && chown -R node:node /app
 # USER node
 
+# Expose the port that the application listens on.
 EXPOSE 3000
 
+# Run the application in development mode.
 CMD ["npm", "run", "dev"]

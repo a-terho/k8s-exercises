@@ -1,0 +1,9 @@
+dist/
+manifests/
+node_modules/
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+.env
+.gitignore
+.DS_Store
