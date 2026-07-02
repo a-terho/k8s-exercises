@@ -36,3 +36,17 @@ The logs should have printed:
 ```
 
 Connect to the service locally from [http://localhost:8080/](http://localhost:8080/)
+
+The app receives todos from **todo-backend** service which needs to be started seperately. Otherwise app will display error messages about service not being available and will not work properly. To start the service, use:
+
+```bash
+kubectl apply -f ../todo-backend/manifests
+```
+
+To check that the service is running, use:
+
+```bash
+kubectl logs -f deployment/todo-backend-dep
+```
+
+The logs should say: `Server running at http://localhost:3000`

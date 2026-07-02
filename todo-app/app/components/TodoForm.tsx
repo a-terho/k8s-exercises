@@ -1,24 +1,45 @@
 'use client';
 
-import { useState } from 'react';
+import { useActionState, useState } from 'react';
+import { addTodoAction } from '@/app/actions/todos';
+import type { AddTodoState } from '@/app/types';
 
 const MAX_LENGTH = 140;
 
+const initialState: AddTodoState = {
+  success: false,
+};
+
 const TodoForm = () => {
   const [value, setValue] = useState('');
+  const [fresh, setFresh] = useState(true);
+  const [state, formAction, pending] = useActionState(
+    addTodoAction,
+    initialState,
+  );
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
+    setFresh(false);
   };
 
-  const onSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const onSubmit = () => {
+    setValue('');
+    setFresh(true);
   };
+
+  const hasNewError = state?.error && fresh && !pending;
+  const hasNewSuccess = state.success && fresh && !pending;
 
   return (
     <div>
-      <form onSubmit={onSubmit} className="flex flex-row gap-2 p-1 mt-3 w-full">
+      <form
+        action={formAction}
+        onSubmit={onSubmit}
+        className="flex flex-row gap-2 p-1 mt-3 w-full"
+      >
         <input
+          name="message"
           type="text"
           value={value}
           onChange={onChange}
@@ -33,11 +54,21 @@ const TodoForm = () => {
           Send
         </button>
       </form>
-      <span
-        className={`block w-full text-center text-gray-400 ${value.length > 0 ? 'visible' : 'invisible'}`}
-      >
-        {value.length}/{MAX_LENGTH} characters
-      </span>
+      {hasNewError && value.length === 0 ? (
+        <span className="block wfull text-center text-red-500">
+          {state.error}
+        </span>
+      ) : hasNewSuccess && value.length === 0 ? (
+        <span className="block wfull text-center text-green-600">
+          New todo added!
+        </span>
+      ) : (
+        <span
+          className={`block w-full text-center text-gray-400 ${value.length > 0 ? 'visible' : 'invisible'}`}
+        >
+          {value.length}/{MAX_LENGTH} characters
+        </span>
+      )}
     </div>
   );
 };

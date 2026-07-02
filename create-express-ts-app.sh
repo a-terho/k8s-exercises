@@ -89,7 +89,7 @@ const fs = require('fs');
 const pkg = JSON.parse(fs.readFileSync('package.json'));
 pkg.scripts = {
   ...pkg.scripts,
-  dev: 'node --watch src/index.ts',
+  dev: 'tsx watch src/index.ts',
   check: 'tsc --noEmit',
   build: 'tsc',
   start: 'node dist/index.js'
