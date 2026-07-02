@@ -2,7 +2,7 @@
 
 Sisältönä Kubernetes-kurssin harjoitukset. Suurin osa tekstistä on englanniksi.
 
-## Chapter 1
+## Chapter 2
 
 - [1.1. Getting started](https://github.com/a-terho/k8s-exercises/tree/1.1/log-output)
 - [1.2. The project, step 1](https://github.com/a-terho/k8s-exercises/tree/1.2/todo-app)
@@ -17,3 +17,7 @@ Sisältönä Kubernetes-kurssin harjoitukset. Suurin osa tekstistä on englannik
 - [1.11. Persisting data](https://github.com/a-terho/k8s-exercises/tree/1.11/log-output)
 - [1.12. The project, step 6](https://github.com/a-terho/k8s-exercises/tree/1.12/todo-app)
 - [1.13. The project, step 7](https://github.com/a-terho/k8s-exercises/tree/1.13/todo-app)
+
+## Chapter 3
+
+- [2.1. Connecting pods](https://github.com/a-terho/k8s-exercises/tree/2.1/log-output)

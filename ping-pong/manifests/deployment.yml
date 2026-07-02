@@ -18,7 +18,7 @@ spec:
             claimName: local-volume1-claim
       containers:
         - name: ping-pong
-          image: alterho/ping-pong:1.11
+          image: alterho/ping-pong:2.1
           env:
             - name: PORT
               value: '3001'

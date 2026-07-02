@@ -17,6 +17,11 @@ const initCounter = async () => {
   }
 };
 
+// this route is meant to be reached only within Kubernetes cluster
+app.get('/pings', (_req, res) => {
+  return res.status(200).send(counter);
+});
+
 app.get('/{*splat}', async (req, res) => {
   const response = `pong ${counter++}`;
   console.log(`GET ${req.url} ${response}`);
