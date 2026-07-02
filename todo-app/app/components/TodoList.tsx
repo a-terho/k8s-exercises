@@ -1,19 +1,8 @@
-const todos = [
-  {
-    id: '0',
-    message: 'Learn Kubernetes basics',
-  },
-  {
-    id: '1',
-    message: 'Deploy application to cluster',
-  },
-  {
-    id: '2',
-    message: 'Configure persistent volumes',
-  },
-];
+import { getTodos } from '@/app/services/todos';
 
-const TodoList = () => {
+const TodoList = async () => {
+  const todos = await getTodos();
+
   return (
     <ul className="space-y-2 w-full m-2">
       {todos.map((todo) => (
