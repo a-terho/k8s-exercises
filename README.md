@@ -21,3 +21,4 @@ Sisältönä Kubernetes-kurssin harjoitukset. Suurin osa tekstistä on englannik
 ## Chapter 3
 
 - [2.1. Connecting pods](https://github.com/a-terho/k8s-exercises/tree/2.1/log-output)
+- [2.2. The project, step 8](https://github.com/a-terho/k8s-exercises/tree/2.2/todo-app)
