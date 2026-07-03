@@ -6,7 +6,7 @@ services:
     image: todo-backend:prod
     container_name: todo-backend-prod
     ports:
-      - '4000:3000'
+      - '4000:4000'
 
   express-dev:
     build:
@@ -15,7 +15,7 @@ services:
     image: todo-backend:dev
     container_name: todo-backend-dev
     ports:
-      - '4000:3000'
+      - '4000:4000'
     develop:
       watch:
         - action: sync

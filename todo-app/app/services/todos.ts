@@ -1,6 +1,7 @@
+import config from '@/app/util/config';
 import type { Todo } from '@/app/types';
 
-const todoEndpoint = 'http://todo-backend-svc:1234/todos';
+const todoEndpoint = `${config.backendUrl}/todos`;
 
 export const getTodos = async (): Promise<Todo[]> => {
   const res = await fetch(todoEndpoint, { next: { tags: ['todos'] } });

@@ -4,13 +4,17 @@ import { useActionState, useState } from 'react';
 import { addTodoAction } from '@/app/actions/todos';
 import type { AddTodoState } from '@/app/types';
 
-const MAX_LENGTH = 140;
+const DEFAULT_MAX_LENGTH = 140;
 
 const initialState: AddTodoState = {
   success: false,
 };
 
-const TodoForm = () => {
+interface Props {
+  maxLength?: number;
+}
+
+const TodoForm = ({ maxLength = DEFAULT_MAX_LENGTH }: Props) => {
   const [value, setValue] = useState('');
   const [fresh, setFresh] = useState(true);
   const [state, formAction, pending] = useActionState(
@@ -43,8 +47,8 @@ const TodoForm = () => {
           type="text"
           value={value}
           onChange={onChange}
-          placeholder="Enter a new todo (max 140 characters)"
-          maxLength={MAX_LENGTH}
+          placeholder={`Enter a new todo (max ${maxLength} characters)`}
+          maxLength={maxLength}
           className="flex grow border border-green-600 focus:ring-green-600 px-2 py-1 rounded"
         />
         <button
@@ -66,7 +70,7 @@ const TodoForm = () => {
         <span
           className={`block w-full text-center text-gray-400 ${value.length > 0 ? 'visible' : 'invisible'}`}
         >
-          {value.length}/{MAX_LENGTH} characters
+          {value.length}/{maxLength} characters
         </span>
       )}
     </div>

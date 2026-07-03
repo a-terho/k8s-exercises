@@ -1,11 +1,12 @@
 import { stat, mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import config from '@/app/util/config';
 import logger from '@/app/util/logger';
 
 const CACHE_DIR = path.join(process.cwd(), 'cache');
-const CACHED_IMG_FILE = path.join(CACHE_DIR, '1200.jpg');
-const REMOTE_URL = 'https://picsum.photos/1200';
-const TIME_TO_LIVE_MS = 10 * 60 * 1000; // 10 minutes
+const CACHED_IMG_FILE = path.join(CACHE_DIR, 'hero.jpg');
+const PLACEHOLDER_IMG_FILE = path.join(process.cwd(), 'public/placeholder.jpg');
+const TIME_TO_LIVE_MS = config.ttlMins * 60 * 1000;
 
 const getImageTimestamp = async (): Promise<number | null> => {
   try {
@@ -24,11 +25,14 @@ export const loadImage = async (): Promise<{
   path: string;
   timestamp: number;
 }> => {
+  // use static placeholder image if picture url is not specified
+  if (!config.pictureUrl) return { path: PLACEHOLDER_IMG_FILE, timestamp: 0 };
+
   const timestamp = await getImageTimestamp();
 
   if (!timestamp || isStale(timestamp)) {
     // fetch fresh image from remote url
-    const res = await fetch(REMOTE_URL, { cache: 'no-store' });
+    const res = await fetch(config.pictureUrl, { cache: 'no-store' });
     if (!res.ok) {
       throw new Error(`failed to fetch ${CACHED_IMG_FILE}: ${res.status}`);
     }

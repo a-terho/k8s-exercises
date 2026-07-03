@@ -5,6 +5,9 @@ services:
       dockerfile: Dockerfile
     image: todo-app:prod
     container_name: todo-app-prod
+    environment:
+      - BACKEND_URL=http://host.docker.internal:4000
+      - PICTURE_URL=https://picsum.photos/1200
     ports:
       - '3000:3000'
 
@@ -18,6 +21,8 @@ services:
       - '3000:3000'
     environment:
       - WATCHPACK_POLLING=true
+      - BACKEND_URL=http://host.docker.internal:4000
+      - PICTURE_URL=https://picsum.photos/1200
     develop:
       watch:
         - action: sync
