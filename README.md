@@ -24,3 +24,4 @@ Sisältönä Kubernetes-kurssin harjoitukset. Suurin osa tekstistä on englannik
 - [2.2. The project, step 8](https://github.com/a-terho/k8s-exercises/tree/2.2/todo-app)
 - [2.3. Keep them separated](https://github.com/a-terho/k8s-exercises/tree/2.3/log-output)
 - [2.4. The project, step 9](https://github.com/a-terho/k8s-exercises/tree/2.4/todo-app)
+- [2.5. Documentation and ConfigMaps](https://github.com/a-terho/k8s-exercises/tree/2.5/log-output)

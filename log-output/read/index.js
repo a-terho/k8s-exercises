@@ -7,6 +7,14 @@ const app = express();
 
 const pingsEndpoint = 'http://ping-pong-svc:2345/pings';
 const logFilePath = path.join('/', 'usr', 'src', 'app', 'tmp', 'app.log');
+const informationFilePath = path.join(
+  '/',
+  'usr',
+  'src',
+  'app',
+  'files',
+  'information.txt',
+);
 
 const getPings = async () => {
   try {
@@ -27,11 +35,13 @@ const getPings = async () => {
 
 app.get('/', async (req, res) => {
   try {
-    // fetch ping-pong app and generate dynamic content
+    // fetch ping-pong app, read configurations and generate dynamic content
     const pingpong = await getPings();
+    const fileContent = await fs.readFile(informationFilePath, 'utf8');
     const timestamp = new Date().toISOString();
     const uuid = crypto.randomUUID();
-    const content = `${timestamp}: ${uuid}\nPing / Pongs: ${pingpong}`;
+
+    const content = `file content: ${fileContent}\nenv variable: MESSAGE=${process.env.MESSAGE}\n${timestamp}: ${uuid}\nPing / Pongs: ${pingpong}`;
 
     res.set('Content-Type', 'text/plain');
     return res.status(200).send(content);
