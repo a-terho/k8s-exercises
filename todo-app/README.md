@@ -1,17 +1,18 @@
 # todo-app
 
 To run the application, make sure the Kubernetes cluster (like local `k3d` cluster) is up and running.  
-Make sure that cluster exposes port 8080 that maps to port 80 for HTTP requests, like by using this command:
+Make sure that cluster exposes port 8080 that maps to port 80 for HTTP requests and has access to `/tmp/volume1` folder, like, by using these commands:
 
 ```bash
-k3d cluster create --port 8080:80@loadbalancer --agents 2
+k3d cluster create --port 8080:80@loadbalancer --agents 2 && \
+docker exec k3d-k3s-default-agent-0 mkdir -p /tmp/volume1/todo-app && echo 'Created!'
 ```
 
-In addition with `kubectl` installed, initialize local persistent volume in your `k3d` cluster with:
+In addition with `kubectl` installed, initialize namespace and local persistent volume in your `k3d` cluster with:
 
 ```bash
-docker exec k3d-k3s-default-agent-0 mkdir -p /tmp/volume1/todo-app
-kubectl apply -f ../pvs
+kubectl create namespace project && \
+kubectl apply -f ../pvs && kubectl apply -f ../pvcs/project.yml
 ```
 
 Then, apply all manifests (deployment, service and ingress) with:
@@ -23,7 +24,7 @@ kubectl apply -f manifests
 To check that the pod is running, use:
 
 ```bash
-kubectl logs -f deployment/todo-app-dep
+kubectl logs -f deployment/todo-app-dep --namespace=project
 ```
 
 The logs should have printed:
@@ -46,7 +47,7 @@ kubectl apply -f ../todo-backend/manifests
 To check that the service is running, use:
 
 ```bash
-kubectl logs -f deployment/todo-backend-dep
+kubectl logs -f deployment/todo-backend-dep --namespace=project
 ```
 
 The logs should say: `Server running at http://localhost:3000`
