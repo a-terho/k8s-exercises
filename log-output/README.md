@@ -20,7 +20,7 @@ To check that the pod is running all containers, use:
 kubectl logs -f deployment/log-output-dep --all-containers=true --namespace=exercises
 ```
 
-The logs should have printed `Server started in port 3000` and there should a stream of timestamps.
+The logs should have printed `Server running at port 3000` and there should a stream of timestamps.
 
 Show the temporary log file the pod creates at [http://localhost:8081/log](http://localhost:8081/log)
 
@@ -47,4 +47,10 @@ To check its status, use:
 kubectl logs -f deployment/ping-pong-dep --namespace=exercises
 ```
 
-Logs will tell you where the information is be stored. Check its response from [http://localhost:8081/pingpong](http://localhost:8081/pingpong)
+Logs will tell you where the information is be stored. If the database connection is not established, you can try connecting again by restarting the deployment with:
+
+```bash
+kubectl rollout restart deployment/ping-pong-dep --namespace=exercises
+```
+
+Check its response from [http://localhost:8081/pingpong](http://localhost:8081/pingpong)

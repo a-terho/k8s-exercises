@@ -22,7 +22,7 @@ const query = async (...args) => {
 const initDbTable = async () => {
   try {
     // make sure the connection is available first
-    await testConnection({ retries: 5, delayMs: 2000 });
+    await testConnection({ retries: 10, delayMs: 2000 });
     await query(`
       CREATE TABLE IF NOT EXISTS pings(
         id INTEGER PRIMARY KEY DEFAULT 1,
