@@ -1,43 +1,48 @@
 import express, { type Request, type Response } from 'express';
+import { DrizzleQueryError } from 'drizzle-orm';
+import { db } from '../db/index.ts';
+import { todos } from '../db/schema.ts';
 import type { ApiError, Todo } from '../types.ts';
 
 const router = express.Router();
 export default router;
 
-const todos = [
-  {
-    id: 0,
-    message: 'Learn Kubernetes basics',
-  },
-  {
-    id: 1,
-    message: 'Deploy application to cluster',
-  },
-  {
-    id: 2,
-    message: 'Configure persistent volumes',
-  },
-];
-
-router.get('/', (_req: Request, res: Response<Todo[]>) => {
-  return res.status(200).json(todos);
+router.get('/', async (_req: Request, res: Response<Todo[]>) => {
+  try {
+    const todos = await db.query.todos.findMany();
+    return res.status(200).json(todos);
+  } catch (err) {
+    if (err instanceof DrizzleQueryError) {
+      console.log(
+        'Error when accessing database:',
+        `${err.cause?.message} (${err.message})`,
+      );
+    } else console.log(err);
+    return res.status(500).end();
+  }
 });
 
 router.post(
   '/',
-  (
+  async (
     req: Request<undefined, undefined, { message?: string }>,
     res: Response<Todo | ApiError>,
   ) => {
     const { message } = req.body;
 
     if (message) {
-      const newTodo: Todo = {
-        id: todos.length, // this logic works for now
-        message,
-      };
-      todos.push(newTodo);
-      return res.status(201).json(newTodo);
+      try {
+        const newTodo = await db.insert(todos).values({ message }).returning();
+        return res.status(201).json(newTodo[0]);
+      } catch (err) {
+        if (err instanceof DrizzleQueryError) {
+          console.log(
+            'Error when accessing database:',
+            `${err.cause?.message} (${err.message})`,
+          );
+        } else console.log(err);
+        return res.status(500).end();
+      }
     }
 
     return res

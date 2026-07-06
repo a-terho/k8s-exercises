@@ -15,7 +15,12 @@ spec:
     spec:
       containers:
         - name: todo-backend
-          image: alterho/todo-backend:2.6
+          image: alterho/todo-backend:2.8
           env:
             - name: PORT
               value: '3000'
+          envFrom:
+            - configMapRef:
+                name: postgres-config
+            - secretRef:
+                name: postgres-secret

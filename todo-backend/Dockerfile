@@ -42,6 +42,10 @@ ENV NODE_ENV=production
 COPY --from=deps --chown=node:node /app/node_modules ./node_modules
 COPY --from=builder --chown=node:node /app/dist ./dist
 
+# Copy files required for database migrations
+COPY --chown=node /migrations ./migrations
+COPY --chown=node drizzle.config.ts .
+
 # Switch to non-root user for security best practices
 # USER node
 

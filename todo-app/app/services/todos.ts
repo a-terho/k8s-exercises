@@ -5,6 +5,8 @@ const todoEndpoint = `${config.backendUrl}/todos`;
 
 export const getTodos = async (): Promise<Todo[]> => {
   const res = await fetch(todoEndpoint, { next: { tags: ['todos'] } });
+  // for non-2** statuses throw an error
+  if (!res.ok) throw new Error('Database unavailable');
   return res.json();
 };
 
@@ -15,7 +17,7 @@ export const addTodo = async (message: string): Promise<Todo | null> => {
     body: JSON.stringify({ message }),
   });
 
-  // for non-2** requests respond with nothing
+  // for non-2** statuses respond with nothing
   if (!res.ok) return null;
 
   return res.json();

@@ -1,7 +1,7 @@
 # todo-app
 
 To run the application, make sure the Kubernetes cluster (like local `k3d` cluster) is up and running.  
-Make sure that cluster exposes port 8080 that maps to port 80 for HTTP requests and has access to `/tmp/volume1` folder, like, by using these commands:
+Make sure that cluster exposes port 8080 that maps to port 80 for HTTP requests and has access to `/tmp/volume1` folder, like by using these commands:
 
 ```bash
 k3d cluster create --port 8080:80@loadbalancer --agents 2 && \
@@ -50,4 +50,14 @@ To check that the service is running, use:
 kubectl logs -f deployment/todo-backend-dep --namespace=project
 ```
 
-The logs should say: `Server running at http://localhost:3000`
+The logs should say: `Server running at http://localhost:3000`. Database might not be reachable immediately. The backend runs database migrations as a seperate job. You can check whether migrations ran successfully from the logs with the following command. Todo list functionality is not available before that.
+
+```bash
+kubectl logs -f jobs/db-migrate --all-containers --namespace=project
+```
+
+Dropping database connection can be simulated by stopping the PostgreSQL StatefulSet resource.
+
+```bash
+kubectl delete -f ../todo-backend/manifests/postgres-ss.yml
+```

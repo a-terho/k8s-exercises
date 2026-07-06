@@ -30,24 +30,29 @@ export const loadImage = async (): Promise<{
 
   const timestamp = await getImageTimestamp();
 
-  if (!timestamp || isStale(timestamp)) {
-    // fetch fresh image from remote url
-    const res = await fetch(config.pictureUrl, { cache: 'no-store' });
-    if (!res.ok) {
-      throw new Error(`failed to fetch ${CACHED_IMG_FILE}: ${res.status}`);
+  try {
+    if (!timestamp || isStale(timestamp)) {
+      // fetch fresh image from remote url
+      const res = await fetch(config.pictureUrl, { cache: 'no-store' });
+      if (!res.ok) {
+        throw new Error(`failed to fetch ${CACHED_IMG_FILE}: ${res.status}`);
+      }
+
+      // then write it to a file
+      const imageBuffer = Buffer.from(await res.arrayBuffer());
+      await mkdir(CACHE_DIR, { recursive: true });
+      await writeFile(CACHED_IMG_FILE, imageBuffer);
+
+      // read the new fresh timestamp from new image
+      const newTimestamp = (await getImageTimestamp()) ?? Date.now();
+
+      logger.debug(`fetched ${CACHED_IMG_FILE} from ${res.url}`);
+      return { path: CACHED_IMG_FILE, timestamp: newTimestamp };
     }
-
-    // then write it to a file
-    const imageBuffer = Buffer.from(await res.arrayBuffer());
-    await mkdir(CACHE_DIR, { recursive: true });
-    await writeFile(CACHED_IMG_FILE, imageBuffer);
-
-    // read the new fresh timestampm from new image
-    const newTimestamp = (await getImageTimestamp()) ?? Date.now();
-
-    logger.debug(`fetched ${CACHED_IMG_FILE} from ${res.url}`);
-    return { path: CACHED_IMG_FILE, timestamp: newTimestamp };
+    return { path: CACHED_IMG_FILE, timestamp };
+  } catch {
+    // in case any part of fetching and saving sequence fails, use a fallback
+    // will cause retries on every subsequent call as timestamp is not updated
+    return { path: PLACEHOLDER_IMG_FILE, timestamp: 0 };
   }
-
-  return { path: CACHED_IMG_FILE, timestamp };
 };

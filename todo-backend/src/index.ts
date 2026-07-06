@@ -1,9 +1,7 @@
+import 'dotenv/config';
 import express, { type Request } from 'express';
-import dotenv from 'dotenv';
 import morgan from 'morgan';
 import todoRouter from './routes/todos.ts';
-
-dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 4000;

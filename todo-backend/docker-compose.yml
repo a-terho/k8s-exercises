@@ -7,6 +7,10 @@ services:
     container_name: todo-backend-prod
     ports:
       - '4000:4000'
+    environment:
+      - NODE_ENV=production
+      - DATABASE_HOST=host.docker.internal
+      - POSTGRES_PASSWORD=postgres
 
   express-dev:
     build:
@@ -16,6 +20,10 @@ services:
     container_name: todo-backend-dev
     ports:
       - '4000:4000'
+    environment:
+      - NODE_ENV=development
+      - DATABASE_HOST=host.docker.internal
+      - POSTGRES_PASSWORD=postgres
     develop:
       watch:
         - action: sync
@@ -26,3 +34,14 @@ services:
             - dist/
         - action: rebuild
           path: package.json
+
+  database-migrations:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: todo-backend:prod
+    container_name: todo-backend-migrations
+    environment:
+      - DATABASE_HOST=host.docker.internal
+      - POSTGRES_PASSWORD=postgres
+    command: ['npx', 'drizzle-kit', 'migrate']

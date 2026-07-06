@@ -6,4 +6,4 @@ docker-compose*.yml
 .dockerignore
 .env
 .gitignore
-.DS_Store
+**/.DS_Store

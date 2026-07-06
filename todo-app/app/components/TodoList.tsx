@@ -19,7 +19,7 @@ const TodoList = async () => {
       {error ? (
         <li className="text-red-500 text-center">{error}</li>
       ) : todos.length === 0 ? (
-        <li>No todos yet.</li>
+        <li className="text-center">No todos yet.</li>
       ) : (
         todos.map((todo) => (
           <li key={todo.id} className="card">

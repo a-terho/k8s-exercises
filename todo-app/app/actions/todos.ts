@@ -16,10 +16,13 @@ export const addTodoAction = async (
   }
 
   try {
-    await addTodo(message);
+    const newTodo = await addTodo(message);
+    if (newTodo === null) {
+      return { error: 'Database error, adding todo failed', success: false };
+    }
   } catch (err) {
     logger.debug(String(err));
-    return { error: 'Adding todo failed', success: false };
+    return { error: 'Connection error, adding todo failed', success: false };
   }
 
   revalidateTag('todos', 'max');

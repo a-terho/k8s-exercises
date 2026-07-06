@@ -14,5 +14,12 @@
     "strict": true,
     "skipLibCheck": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": [
+    "dist",
+    "manifests",
+    "migrations",
+    "node_modules",
+    "drizzle.config.ts"
+  ]
 }

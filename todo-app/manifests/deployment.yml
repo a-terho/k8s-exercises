@@ -19,7 +19,7 @@ spec:
             claimName: local-volume1-claim
       containers:
         - name: todo-app
-          image: alterho/todo-app:2.6
+          image: alterho/todo-app:2.8
           volumeMounts:
             - name: app-cache
               mountPath: /app/cache
