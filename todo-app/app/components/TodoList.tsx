@@ -2,6 +2,28 @@ import { getTodos } from '@/app/services/todos';
 import type { Todo } from '@/app/types';
 import logger from '@/app/util/logger';
 
+// convert https:// and http:// links in todos into anchor tags
+const addLinks = (text: string) => {
+  const regex = /(https?:\/\/[^\s<]+)/g;
+  const parts = text.split(regex);
+  return parts.map((part, i) => {
+    if (part.match(regex)) {
+      return (
+        <a key={i} href={part} target="_blank" rel="noopener noreferrer">
+          {truncateString(part)}
+        </a>
+      );
+    }
+    return part;
+  });
+};
+
+// cuts down long links
+const truncateString = (text: string, maxLength = 60) => {
+  if (text.length <= maxLength) return text;
+  return text.slice(0, maxLength - 3) + '...';
+};
+
 const TodoList = async () => {
   let todos: Todo[];
   let error: string | null = null;
@@ -23,7 +45,7 @@ const TodoList = async () => {
       ) : (
         todos.map((todo) => (
           <li key={todo.id} className="card">
-            {todo.message}
+            {addLinks(todo.message)}
           </li>
         ))
       )}
