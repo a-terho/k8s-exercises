@@ -29,3 +29,4 @@ Sisältönä Kubernetes-kurssin harjoitukset. Suurin osa tekstistä on englannik
 - [2.7. Stateful applications](https://github.com/a-terho/k8s-exercises/tree/2.7/log-output)
 - [2.8. The project, step 11](https://github.com/a-terho/k8s-exercises/tree/2.8/todo-app)
 - [2.9. The project, step 12](https://github.com/a-terho/k8s-exercises/tree/2.9/todo-app)
+- [2.10. The project, step 13](https://github.com/a-terho/k8s-exercises/tree/2.10/todo-app)

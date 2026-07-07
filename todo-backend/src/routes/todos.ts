@@ -3,6 +3,7 @@ import { DrizzleQueryError } from 'drizzle-orm';
 import { db } from '../db/index.ts';
 import { todos } from '../db/schema.ts';
 import type { ApiError, Todo } from '../types.ts';
+import config from '../config.ts';
 
 const router = express.Router();
 export default router;
@@ -31,6 +32,17 @@ router.post(
     const { message } = req.body;
 
     if (message) {
+      if (message.length > config.maxTodoLength) {
+        console.log(
+          `Todo was not accepted for being too long (over ${config.maxTodoLength} characters).`,
+        );
+        return res.status(400).json({
+          error: {
+            message: `"message" is too long (max length: ${config.maxTodoLength})`,
+          },
+        });
+      }
+
       try {
         const newTodo = await db.insert(todos).values({ message }).returning();
         return res.status(201).json(newTodo[0]);

@@ -15,10 +15,12 @@ spec:
     spec:
       containers:
         - name: todo-backend
-          image: alterho/todo-backend:2.8
+          image: alterho/todo-backend:2.10
           env:
             - name: PORT
               value: '3000'
+            - name: MAX_TODO_LENGTH
+              value: '140'
           envFrom:
             - configMapRef:
                 name: postgres-config
