@@ -8,7 +8,8 @@ Initialize namespace in the cluster and apply the manifests with:
 
 ```bash
 kubectl create namespace exercises && \
-kubectl apply -f manifests-gke
+kubectl apply -f manifests-gke && \
+kubectl apply -f loadbalancer.yml
 ```
 
 To check application status, use:

@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: log-output-dep
+  namespace: exercises
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: log-output
+  template:
+    metadata:
+      labels:
+        app: log-output
+    spec:
+      volumes:
+        - name: shared-tmp-files
+          emptyDir: {}
+        - name: information-file
+          configMap:
+            name: log-output-configmap
+            items:
+              - key: 'information.txt' # data key name
+                path: 'information.txt' # file name it maps to
+      containers:
+        - name: log-output-write
+          image: alterho/log-output:2.1-write
+          volumeMounts:
+            - name: shared-tmp-files
+              mountPath: /usr/src/app/tmp
+        - name: log-output-read
+          image: alterho/log-output:2.5-read
+          volumeMounts:
+            - name: shared-tmp-files
+              mountPath: /usr/src/app/tmp
+            - name: information-file
+              mountPath: /usr/src/app/files
+              # alternative: mount file directly, this disables ConfigMap updates
+              # mountPath: /usr/src/app/files/information.txt # mount to file path
+              # subPath: information.txt # mount only this file from the configMap
+          env:
+            - name: MESSAGE
+              valueFrom:
+                configMapKeyRef:
+                  name: log-output-configmap
+                  key: message

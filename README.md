@@ -34,3 +34,4 @@ Sisältönä Kubernetes-kurssin harjoitukset. Suurin osa tekstistä on englannik
 ## Chapter 4
 
 - [3.1. Pingpong GKE](https://github.com/a-terho/k8s-exercises/tree/3.1/ping-pong)
+- [3.2. Back to Ingress](https://github.com/a-terho/k8s-exercises/tree/3.2/log-output)
