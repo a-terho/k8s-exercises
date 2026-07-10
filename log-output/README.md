@@ -45,4 +45,6 @@ At the moment file system is used as a seperate storage in case database connect
 kubectl rollout restart deployment/ping-pong-dep --namespace=exercises
 ```
 
-Check its response at `/pingpong` route.
+**ping-pong** application currently responds to any GET request under `/pingpong` subroutes due to splat route handling in the backend code. Current configuration maps `/pingpong` route prefix to `/` for the backend. That is why you can access the `/pings` route at `/pingpong/pings` which was originally meant to be accessed only within Kubernetes cluster.
+
+GKE sends a lot of internal health check requests to `/` endpoints which will increase the ping count continously and thus will flood the request log. You can check that your requests are mapped correctly by accessing ie. `/pingpong/asd` which should print `GET /asd pong *` to the logs.
