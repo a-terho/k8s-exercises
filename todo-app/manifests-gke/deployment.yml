@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-app-dep
+  namespace: project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-app
+  template:
+    metadata:
+      labels:
+        app: todo-app
+    spec:
+      volumes:
+        - name: app-cache
+          persistentVolumeClaim:
+            claimName: gke-dynamic-pvc
+      containers:
+        - name: todo-app
+          image: TODO_APP_IMAGE
+          volumeMounts:
+            - name: app-cache
+              mountPath: /app/cache
+              subPath: todo-app # use a subfolder inside the PV
+          env:
+            - name: BACKEND_URL
+              value: 'http://todo-backend-svc:1234'
+            - name: PICTURE_URL
+              value: 'https://picsum.photos/1200'
+            - name: PICTURE_TTL_MINS
+              value: '5'
+            - name: MAX_TODO_LENGTH
+              value: '140'

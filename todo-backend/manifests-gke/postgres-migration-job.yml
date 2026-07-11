@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-migrate
+  namespace: project
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-for-db
+          image: busybox
+          command:
+            - sh
+            - -c
+            - | # test whether database is reachable at port 5432
+              until nc -z -w2 "$DATABASE_HOST" 5432 2>/dev/null; do
+                echo "Waiting for database..."
+                sleep 2
+              done
+              echo 'Database reachable'
+          envFrom:
+            - configMapRef:
+                name: postgres-config
+      containers:
+        - name: apply-db-migrations
+          image: TODO_BACKEND_IMAGE
+          command: ['npx', 'drizzle-kit', 'migrate']
+          envFrom:
+            - configMapRef:
+                name: postgres-config
+            - secretRef:
+                name: postgres-secret

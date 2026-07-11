@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - manifests-gke/postgres-config.yml
+  - manifests-gke/postgres-secret.yml
+  - manifests-gke/postgres-ss.yml
+  - manifests-gke/deployment.yml
+  - manifests-gke/service.yml
+  - manifests-gke/postgres-migration-job.yml
+images:
+  - name: TODO_BACKEND_IMAGE
+    newName: alterho/todo-backend:2.10
