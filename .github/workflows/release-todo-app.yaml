@@ -17,7 +17,7 @@ jobs:
     # Use environment scoped variables and secrets
     environment: GKE_PROJECT
     env:
-      PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+      PROJECT_ID: ${{ secrets.GKE_PROJECT_ID }}
       GKE_CLUSTER: dwk-cluster
       GKE_ZONE: europe-north1-b
       REGISTRY: europe-north1-docker.pkg.dev
