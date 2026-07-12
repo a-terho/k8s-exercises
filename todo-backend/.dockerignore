@@ -1,8 +1,9 @@
 dist/
-manifests/
+manifests*/
 node_modules/
 Dockerfile*
 docker-compose*.yml
+kustomization.yaml
 .dockerignore
 .env
 .gitignore

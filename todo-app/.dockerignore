@@ -1,5 +1,6 @@
 # Kubernetes manifests
-manifests/
+manifests*/
+kustomization.yaml
 
 # Dependencies (installed inside the image, never copy from host)
 node_modules/
