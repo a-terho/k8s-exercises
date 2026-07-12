@@ -22,6 +22,7 @@ jobs:
       GKE_ZONE: europe-north1-b
       REGISTRY: europe-north1-docker.pkg.dev
       REPOSITORY: docker-images
+      K8S_NAMESPACE: project
       IMAGE: todo-app
       DEPLOYMENT: todo-app-dep
       BRANCH: ${{ github.ref_name }}
@@ -70,5 +71,5 @@ jobs:
         run: |-
           kustomize edit set image TODO_APP_IMAGE=$IMAGE_TAG
           kustomize build . | kubectl apply -f -
-          kubectl rollout status deployment $DEPLOYMENT
-          kubectl get services -o wide
+          kubectl rollout status deployment $DEPLOYMENT -n $K8S_NAMESPACE
+          kubectl get services -o wide -n $K8S_NAMESPACE
