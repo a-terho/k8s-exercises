@@ -56,7 +56,7 @@ gcloud projects get-iam-policy PROJECT_ID \
   --format="table(bindings.members,bindings.role)"
 ```
 
-## Repository Setup
+## Repository setup
 
 These are assumptions that workflows make about GKE cluster and Artifact Registry setup. If they differ, change the hard-coded values in both .yaml files.
 
@@ -70,3 +70,7 @@ Following Secrets need to be defined. Replace placeholders accordingly.
 - `GKE_PROJECT_ID`: `PROJECT_ID`
 - `SERVICE_ACCOUNT`: github-actions-sa@`PROJECT_ID`.iam.gserviceaccount.com
 - `WORKLOAD_IDENTITY_PROVIDER`: projects/`PROJECT_NUMBER`/locations/global/workloadIdentityPools/github-pool/providers/github-provider
+
+## After deployment
+
+Follow instructions in [todo-app](../../todo-app/) to check deployment status. All `kubectl apply` commands can be skipped as workflows will run them automatically.
