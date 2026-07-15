@@ -60,3 +60,42 @@ Dropping database connection can be simulated by stopping the PostgreSQL Statefu
 ```bash
 kubectl delete -f ../todo-backend/manifests-gke/postgres-ss.yml
 ```
+
+## Where to store data?
+
+Related to [exercise 3.9](https://courses.mooc.fi/org/uh-cs/courses/devops-with-kubernetes-2026/chapter-4/gke-features#502bc277-3314-56d2-ba29-9f438bab43bf), here are some pros and cons of either choosing DBaaS (Google Cloud SQL) or database-in-cluster DIY solution.
+
+### Using [Google Cloud SQL](https://cloud.google.com/sql) as DBaaS
+
+Pros:
+
+- Removes administrative overhead
+- Ease of use, setup and scaling even when application grows
+- Speed, high availability and safety assured
+- Promise of data recovery in case of disaster
+- Configurations and special circumstances are thought out before-hand
+
+Cons:
+
+- Cost: basic Enterpise model PostgreSQL configuration (db-standard-1) costs around 58 €/month
+- Locked in to using GCloud SQL Services
+
+### Using DIY PersistentVolume solution
+
+Pros:
+
+- Configurable for special needs
+- Local cluster deployment is similar to production deployment
+- Processes are visible to the developer because of management access
+- Networking happens inside the deployed Kubernetes cluster, no seperate authentication layer
+- Can be cheaper as there's no seperate subscription
+- No vendor lock-in, easier to deploy across different cluster providers
+
+Cons:
+
+- **In essence:** you have to worry about everything related to maintenance
+- Requires manual configuration for backups and scaling
+- Database safety, upgrades and monitoring is in developer's hands
+- PVC can be accidentally deleted; out of luck if there are no backups
+- Administrative work in case of emergency or downtime
+- Still reliant on GKE node costs if deployed there
