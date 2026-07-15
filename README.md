@@ -39,3 +39,4 @@ Sisältönä Kubernetes-kurssin harjoitukset. Suurin osa tekstistä on englannik
 - [3.4. Rewritten routing](https://github.com/a-terho/k8s-exercises/tree/3.4/log-output)
 - [3.5. The project, step 14](https://github.com/a-terho/k8s-exercises/tree/3.5/todo-app)
 - [3.6. The project, step 15](https://github.com/a-terho/k8s-exercises/tree/3.6/.github/workflows)
+- [3.7. The project, step 16](https://github.com/a-terho/k8s-exercises/tree/3.7/.github/workflows)
