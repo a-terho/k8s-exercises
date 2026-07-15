@@ -2,7 +2,6 @@ name: Release todo-app
 
 on:
   push:
-    branches: [main]
 
 # These are apparently required for Google Cloud Auth and Setup
 permissions:
@@ -17,15 +16,15 @@ jobs:
     # Use environment scoped variables and secrets
     environment: GKE_PROJECT
     env:
-      PROJECT_ID: ${{ secrets.GKE_PROJECT_ID }}
+      PROJECT_ID: '${{ secrets.GKE_PROJECT_ID }}'
       GKE_CLUSTER: dwk-cluster
       GKE_ZONE: europe-north1-b
       REGISTRY: europe-north1-docker.pkg.dev
       REPOSITORY: docker-images
-      K8S_NAMESPACE: project
+      MAIN_NAMESPACE: project
       IMAGE: todo-app
       DEPLOYMENT: todo-app-dep
-      BRANCH: ${{ github.ref_name }}
+      BRANCH: '${{ github.ref_name }}'
 
     steps:
       - name: Checkout
@@ -43,7 +42,7 @@ jobs:
         run: gcloud info
 
       - name: 'Configure Docker authentication with gcloud CLI'
-        run: gcloud auth configure-docker $REGISTRY
+        run: gcloud auth configure-docker "$REGISTRY"
 
       - name: 'Get GKE credentials'
         uses: 'google-github-actions/get-gke-credentials@v3'
@@ -53,23 +52,35 @@ jobs:
           location: '${{ env.GKE_ZONE }}'
 
       - name: 'Form the image name and save to environment'
-        run: echo "IMAGE_TAG=$REGISTRY/$PROJECT_ID/$REPOSITORY/$IMAGE:$BRANCH-$GITHUB_SHA" >> $GITHUB_ENV
+        run: echo "IMAGE_TAG=$REGISTRY/$PROJECT_ID/$REPOSITORY/$IMAGE:$BRANCH-$GITHUB_SHA" >> "$GITHUB_ENV"
 
       - name: Build
         working-directory: todo-app
-        run: docker build --tag $IMAGE_TAG .
+        run: docker build --tag "$IMAGE_TAG" .
 
       - name: Publish
         working-directory: todo-app
-        run: docker push $IMAGE_TAG
+        run: docker push "$IMAGE_TAG"
 
       - name: Set up Kustomize
         uses: imranismail/setup-kustomize@v3
 
+      - name: Initialize namespace
+        run: |-
+          if [ "$BRANCH" = "main" ]; then
+            K8S_NAMESPACE="$MAIN_NAMESPACE"
+          else
+            K8S_NAMESPACE="$BRANCH"
+          fi
+          echo "K8S_NAMESPACE=$K8S_NAMESPACE" >> "$GITHUB_ENV"
+          kubectl create namespace "$K8S_NAMESPACE" || true
+          kubectl config set-context --current --namespace="$K8S_NAMESPACE"
+
       - name: Deploy
         working-directory: todo-app
         run: |-
-          kustomize edit set image TODO_APP_IMAGE=$IMAGE_TAG
+          kustomize edit set namespace "$K8S_NAMESPACE"
+          kustomize edit set image TODO_APP_IMAGE="$IMAGE_TAG"
           kustomize build . | kubectl apply -f -
-          kubectl rollout status deployment $DEPLOYMENT -n $K8S_NAMESPACE
-          kubectl get services -o wide -n $K8S_NAMESPACE
+          kubectl rollout status deployment "$DEPLOYMENT" -n "$K8S_NAMESPACE"
+          kubectl get services -o wide -n "$K8S_NAMESPACE"
