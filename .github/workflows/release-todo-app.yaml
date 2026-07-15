@@ -2,6 +2,7 @@ name: Release todo-app
 
 on:
   push:
+    branches: ['**'] # only trigger for branches, not tags
 
 # These are apparently required for Google Cloud Auth and Setup
 permissions:
