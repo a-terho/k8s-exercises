@@ -5,4 +5,4 @@ metadata:
   namespace: project
 data:
   # format is stateful-set.parent-service.namespace.svc.cluster.local
-  DATABASE_HOST: 'postgres-ss-0.postgres-svc.project.svc.cluster.local'
+  DATABASE_HOST: 'postgres-ss-0.postgres-svc'

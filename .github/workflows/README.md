@@ -73,4 +73,4 @@ Following Secrets need to be defined. Replace placeholders accordingly.
 
 ## After deployment
 
-Follow instructions in [todo-app](../../todo-app/) to check deployment status. All `kubectl apply` commands can be skipped as workflows will run them automatically.
+Follow instructions in [todo-app](../../todo-app/) to check deployment status. All `kubectl apply` commands can be skipped as workflows will run them automatically. You also need to change all `--namespace=project` flags to reflect the current branch name (unless you are on `main` branch) as the workflow creates namespaces based on branch names.
