@@ -3,6 +3,11 @@ name: Delete namespace when branch is deleted
 on:
   delete:
 
+# These are apparently required for Google Cloud Auth and Setup
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   cleanup:
     if: github.event.ref_type == 'branch'
