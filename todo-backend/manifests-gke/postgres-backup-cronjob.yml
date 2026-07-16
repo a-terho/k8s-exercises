@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: gcs-backup-job
+  namespace: project
+spec:
+  schedule: '15 * * * *'
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: gcs-writer-ksa
+          restartPolicy: OnFailure
+          containers:
+            - name: create-db-backup
+              image: alterho/pg-gcloud-backup
+              envFrom:
+                - configMapRef:
+                    name: postgres-config
+                - secretRef:
+                    name: postgres-secret
+              command:
+                - sh
+                - -c
+                - >
+                  pg_dump --verbose --format=plain
+                  "postgres://postgres:$POSTGRES_PASSWORD@$DATABASE_HOST/postgres"
+                  | gcloud storage cp - "gs://$POSTGRES_GCLOUD_BUCKET/backup-$(date +%Y-%m-%d).sql"
