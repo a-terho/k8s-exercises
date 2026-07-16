@@ -3,6 +3,7 @@ name: Release todo-backend
 on:
   push:
     branches: ['**'] # only trigger for branches, not tags
+    paths: ['todo-backend/**']
 
 # These are apparently required for Google Cloud Auth and Setup
 permissions:

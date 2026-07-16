@@ -1,2 +1,8 @@
 FROM google/cloud-sdk:slim
-RUN apt update && apt install -y postgresql-client && rm -rf /var/lib/apt/lists/*
+
+# https://wiki.postgresql.org/wiki/Apt
+RUN apt update \
+  && apt install -y postgresql-common ca-certificates \
+  && yes | /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh \
+  && apt update && apt install -y postgresql-client-18 \
+  && rm -rf /var/lib/apt/lists/*
