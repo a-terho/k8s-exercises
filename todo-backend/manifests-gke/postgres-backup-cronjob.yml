@@ -4,7 +4,8 @@ metadata:
   name: gcs-backup-job
   namespace: project
 spec:
-  schedule: '45 13 * * *'
+  schedule: '45 14 * * *'
+  timeZone: 'Europe/Helsinki'
   jobTemplate:
     spec:
       template:
