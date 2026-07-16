@@ -42,3 +42,4 @@ Sisältönä Kubernetes-kurssin harjoitukset. Suurin osa tekstistä on englannik
 - [3.7. The project, step 16](https://github.com/a-terho/k8s-exercises/tree/3.7/.github/workflows)
 - [3.8. The project, step 17](https://github.com/a-terho/k8s-exercises/tree/3.8/.github/workflows)
 - [3.9. DBaaS vs DIY](https://github.com/a-terho/k8s-exercises/tree/3.9/todo-app#where-to-store-data)
+- [3.10 The project, step 18](https://github.com/a-terho/k8s-exercises/tree/3.10/.github/workflows#authenticating-database-backup-system)
