@@ -9,7 +9,7 @@ spec:
       restartPolicy: Never
       initContainers:
         - name: wait-for-db
-          image: busybox
+          image: busybox:1.38
           command:
             - sh
             - -c

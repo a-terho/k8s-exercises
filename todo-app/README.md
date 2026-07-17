@@ -99,3 +99,9 @@ Cons:
 - PVC can be accidentally deleted; out of luck if there are no backups
 - Administrative work in case of emergency or downtime
 - Still reliant on GKE node costs if deployed there
+
+## Adding new todos
+
+This is what Google Cloud Console Logs Explorer shows when new todos are added.
+
+![Logs explorer](./logs.png)

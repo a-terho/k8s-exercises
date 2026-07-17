@@ -12,7 +12,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: post-random-article
-              image: busybox
+              image: busybox:1.38
               command:
                 - /bin/sh
                 - -c
