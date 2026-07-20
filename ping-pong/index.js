@@ -1,55 +1,44 @@
-const fs = require('node:fs').promises;
-const path = require('node:path');
 const express = require('express');
 const app = express();
 
-const { query, initDbTable } = require('./db.js');
-const filePath = path.join('/', 'usr', 'src', 'app', 'files', 'requests.log');
+const { query, ensureDbTable, testConnection } = require('./db.js');
 
 let counter = 0;
-let useFilesystem = false;
+let isCounterInitialized = false;
 
 // this route is meant to be reached only within Kubernetes cluster
 app.get('/pings', (_req, res) => {
   return res.status(200).send(counter);
 });
 
-const initCounter = async () => {
-  // use legacy system as a backup
-  if (useFilesystem) {
-    try {
-      const pingpong = await fs.readFile(filePath, 'utf8');
-      if (!isNaN(pingpong)) {
-        counter = Number(pingpong);
-      } else {
-        console.log('invalid number in requests.log file, initializing at 0');
-      }
-    } catch (err) {
-      console.log('failed to read requests.log file, initializing at 0');
-    }
-    return; // exit early
-  }
-
+// readiness probe endpoint
+app.get('/readyz', async (_req, res) => {
   try {
-    const result = await query('SELECT count FROM pings WHERE id = 1');
-    counter = result.rows[0].count;
+    await testConnection({ attempts: 1, delayMs: 0, stdout: false });
+    if (!isCounterInitialized) {
+      console.log('Database connection available');
+      await initCounter();
+    }
+    return res.status(200).send('ok');
   } catch (err) {
-    console.log('failed to read from database, initializing at 0');
+    return res.status(500).end();
   }
+});
+
+const initCounter = async () => {
+  await ensureDbTable();
+  const result = await query('SELECT count FROM pings WHERE id = 1');
+  counter = result.rows[0].count;
+
+  console.log(`Counter initialized to ${counter}`);
+  isCounterInitialized = true;
 };
 
 app.get('/{*splat}', async (req, res) => {
   let response = `pong ${counter++}`;
   console.log(`GET ${req.url} ${response}`);
 
-  if (useFilesystem) {
-    try {
-      await fs.writeFile(filePath, String(counter), 'utf8');
-    } catch (err) {
-      response += ' (not saved)';
-      console.log('file update failed:', err.message);
-    }
-  } else {
+  if (isCounterInitialized) {
     try {
       const result = await query('UPDATE pings SET count = $1 WHERE id = 1', [
         counter,
@@ -68,10 +57,13 @@ app.listen(PORT, async () => {
   console.log(`Server running at port ${PORT}`);
 
   // database connection is not always immediately available when application starts
-  // if connection cannot be established at all, use filesystem saves while app runs
-  if (!(await initDbTable())) {
-    console.log('Using file system storage as backup');
-    useFilesystem = true;
+  try {
+    await testConnection({ attempts: 10, delayMs: 2000 });
+    await initCounter();
+  } catch (err) {
+    const message = err.message ? ` (${err.message})` : ``;
+    console.log(
+      `Database couldn't be reached and counter wasn't initialized${message}. Reattempting if connection becomes available.`,
+    );
   }
-  await initCounter();
 });

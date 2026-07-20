@@ -24,12 +24,12 @@ spec:
                 path: 'information.txt' # file name it maps to
       containers:
         - name: log-output-write
-          image: alterho/log-output:2.1-write
+          image: LOGWRITE_APP_IMAGE
           volumeMounts:
             - name: shared-tmp-files
               mountPath: /usr/src/app/tmp
         - name: log-output-read
-          image: alterho/log-output:2.5-read
+          image: LOGREAD_APP_IMAGE
           volumeMounts:
             - name: shared-tmp-files
               mountPath: /usr/src/app/tmp
@@ -44,3 +44,7 @@ spec:
                 configMapKeyRef:
                   name: log-output-configmap
                   key: message
+          readinessProbe:
+            httpGet:
+              path: '/readyz'
+              port: 3000

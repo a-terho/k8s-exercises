@@ -33,7 +33,19 @@ const getPings = async () => {
   }
 };
 
-app.get('/', async (req, res) => {
+app.get('/readyz', async (_req, res) => {
+  try {
+    const response = await fetch(pingsEndpoint);
+    if (!response.ok) {
+      throw new Error('Endpoint reachable but got bad response');
+    }
+    return res.status(200).send('ok');
+  } catch {
+    return res.status(500).end();
+  }
+});
+
+app.get('/', async (_req, res) => {
   try {
     // fetch ping-pong app, read configurations and generate dynamic content
     const pingpong = await getPings();

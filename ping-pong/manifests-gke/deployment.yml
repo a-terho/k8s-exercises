@@ -21,7 +21,7 @@ spec:
             claimName: gke-dynamic-pvc
       containers:
         - name: ping-pong
-          image: alterho/ping-pong:2.7
+          image: PINGPONG_APP_IMAGE
           env:
             - name: PORT
               value: '3001'
@@ -37,3 +37,7 @@ spec:
             - name: persistent-files
               mountPath: /usr/src/app/files
               subPath: ping-pong
+          readinessProbe:
+            httpGet:
+              path: '/readyz'
+              port: 3001

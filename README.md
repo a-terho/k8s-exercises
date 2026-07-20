@@ -45,3 +45,7 @@ Sisältönä Kubernetes-kurssin harjoitukset. Suurin osa tekstistä on englannik
 - [3.10 The project, step 18](https://github.com/a-terho/k8s-exercises/tree/3.10/.github/workflows#authenticating-database-backup-system)
 - [3.11. The project, step 19](https://github.com/a-terho/k8s-exercises/tree/3.11)
 - [3.12. The project, step 20](https://github.com/a-terho/k8s-exercises/tree/3.12/todo-app#adding-new-todos)
+
+## Chapter 5
+
+- [4.1. Readines probe](https://github.com/a-terho/k8s-exercises/tree/4.1/log-output)

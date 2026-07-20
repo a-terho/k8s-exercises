@@ -11,18 +11,11 @@ const dbPool = new Pool({
 });
 
 const query = async (...args) => {
-  try {
-    return await dbPool.query(...args);
-  } catch (err) {
-    console.log('Query error:', err.message);
-    throw err;
-  }
+  return dbPool.query(...args);
 };
 
-const initDbTable = async () => {
+const ensureDbTable = async () => {
   try {
-    // make sure the connection is available first
-    await testConnection({ retries: 10, delayMs: 2000 });
     await query(`
       CREATE TABLE IF NOT EXISTS pings(
         id INTEGER PRIMARY KEY DEFAULT 1,
@@ -31,22 +24,26 @@ const initDbTable = async () => {
     await query(
       'INSERT INTO pings(id, count) VALUES (1, 0) ON CONFLICT (id) DO NOTHING',
     );
-    return true;
   } catch (err) {
-    console.log('Database initialization failed:', err.message);
-    return false;
+    const message = err.message ? ` (${err.message})` : ``;
+    console.log(`Ensuring database table failed${message}`);
+    throw err;
   }
 };
 
-const testConnection = async ({ retries, delayMs }) => {
-  for (let i = 1; i <= retries; i++) {
+const testConnection = async ({ attempts, delayMs, stdout = true }) => {
+  for (let i = 1; i <= attempts; i++) {
     try {
       await query('SELECT 1');
-      console.log('Database connection available');
+      if (stdout) console.log('Database connection available');
       return; // exit early
     } catch (err) {
-      console.log(`Database connection unavailable (attempt ${i})`);
-      if (i === retries) throw err; // only throw after enough retries
+      if (stdout) {
+        const attemptCount = attempts > 1 ? ` (attempt ${i})` : ``;
+        const message = err.message ? `: ${err.message}` : ``;
+        console.log(`Database connection unavailable${attemptCount}${message}`);
+      }
+      if (i === attempts) throw err; // only throw after enough attempts
       await new Promise((res) => setTimeout(res, delayMs));
     }
   }
@@ -56,4 +53,4 @@ dbPool.on('error', (err) => {
   console.log('Stale database client error:', err.message);
 });
 
-module.exports = { query, initDbTable };
+module.exports = { query, ensureDbTable, testConnection };

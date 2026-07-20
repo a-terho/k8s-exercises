@@ -2,5 +2,6 @@ manifests*
 node_modules
 .dockerignore
 Dockerfile
+kustomization.yaml
 loadbalancer.yml
 README.md

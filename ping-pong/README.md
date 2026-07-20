@@ -8,7 +8,7 @@ Initialize namespace in the cluster and apply the manifests with:
 
 ```bash
 kubectl create namespace exercises && \
-kubectl apply -f manifests-gke && \
+kubectl apply -k . && \
 kubectl apply -f loadbalancer.yml
 ```
 
@@ -18,14 +18,14 @@ To check application status, use:
 kubectl logs -f deployment/ping-pong-dep --namespace=exercises
 ```
 
-At the moment file system is used as a seperate storage in case database connection is not available within reasonable delay after app starts. Logs will tell you where the information is stored. If the database connection is not established, you can try connecting again by restarting the deployment with:
-
-```bash
-kubectl rollout restart deployment/ping-pong-dep --namespace=exercises
-```
-
-Check the application's response from address that is printed with this command. If it says `<pending>` you need to wait an try again.
+Check the application's address that is printed with this command. If it says `<pending>` you need to wait and try again.
 
 ```bash
 echo http://$(kubectl get svc | grep ping-pong-svc | awk '{print $4}')
+```
+
+By default, applying the kustomization does not start the database service. The application is unreachable if the database is not available. In order to actually reach the page, you need to also start the database with:
+
+```bash
+kubectl apply manifests-gke/postgres-ss.yml
 ```
