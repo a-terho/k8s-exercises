@@ -5,6 +5,8 @@ services:
       dockerfile: Dockerfile
     image: todo-backend:prod
     container_name: todo-backend-prod
+    depends_on:
+      - database-migrations
     ports:
       - '4000:4000'
     environment:
@@ -18,30 +20,38 @@ services:
       dockerfile: Dockerfile.dev
     image: todo-backend:dev
     container_name: todo-backend-dev
+    depends_on:
+      - database-migrations
     ports:
       - '4000:4000'
     environment:
       - NODE_ENV=development
-      - DATABASE_HOST=host.docker.internal
+      - DATABASE_HOST=database
       - POSTGRES_PASSWORD=postgres
+    volumes:
+      # use local bind mounts as Docker watch sync + tsx watch was unreliable
+      # with this setup only changes in /src file are reflected live to the container
+      # everything else is baked into the container at build time
+      - ./src:/app/src # /app is the WORKDIR in container
     develop:
       watch:
-        - action: sync
-          path: .
-          target: /src
-          ignore:
-            - node_modules/
-            - dist/
         - action: rebuild
           path: package.json
+
+  database:
+    image: postgres:18.4
+    container_name: postgres-db
+    environment:
+      - POSTGRES_PASSWORD=postgres
 
   database-migrations:
     build:
       context: .
       dockerfile: Dockerfile
-    image: todo-backend:prod
     container_name: todo-backend-migrations
+    depends_on:
+      - database
     environment:
-      - DATABASE_HOST=host.docker.internal
+      - DATABASE_HOST=database
       - POSTGRES_PASSWORD=postgres
     command: ['npx', 'drizzle-kit', 'migrate']

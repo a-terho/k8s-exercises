@@ -31,7 +31,7 @@ The ingress setup may take up to 10 minutes. Once it's ready, you can connect to
 echo http://$(kubectl get ing | grep todo-app-ingress | grep -oE '([0-9]{1,3}\.){3}[0-9]{1,3}')
 ```
 
-The app receives todos from **todo-backend** service which needs to be started seperately. Otherwise app will display error messages about service not being available and will not work properly. To start the service, use:
+The app receives todos from **todo-backend** service which needs to be started seperately. Otherwise app will display error message about app not being healthy and will not work properly. To start the service, use:
 
 ```bash
 kubectl apply -k ../todo-backend
@@ -43,7 +43,7 @@ Please note that **todo-backend** does not initialize the namespace it uses. Thi
 kubectl logs -f deployment/todo-backend-dep --namespace=project
 ```
 
-The logs should say: `Server running at http://localhost:3000`. Database might not be reachable immediately. The backend runs database migrations as a seperate job. You can check whether migrations ran successfully from the logs with the following command. Todo list functionality is not available before that.
+The logs should say: `Server running at http://localhost:3000`. Kubernetes should also have sent probe requests by the time the pod is running. Database might not be reachable immediately. The backend runs database migrations as a seperate job. You can check whether migrations ran successfully from the logs with the following command. Todo list functionality is not available before that.
 
 ```bash
 kubectl logs -f jobs/db-migrate --all-containers --namespace=project
@@ -55,7 +55,9 @@ By default, a cronjob will post a new todo list item automatically every hour if
 kubectl port-forward --namespace project svc/todo-backend-svc 3001:1234
 ```
 
-Dropping database connection can be simulated by stopping the PostgreSQL StatefulSet resource.
+You can temporarily break the app using the provided button on main page. It should spin up a new pod within a few minutes thanks to liveness probes.
+
+Dropping database connection can be simulated by stopping the PostgreSQL StatefulSet resource. This will cause backend readiness probe to fail. It will make Kubernetes stop routing traffic to the backend altogether, making it unavailable and causes an unrecoverable error that Kubernetes can't currently restore automatically. Currently there is no implemented automation for restarting the database.
 
 ```bash
 kubectl delete -f ../todo-backend/manifests-gke/postgres-ss.yml

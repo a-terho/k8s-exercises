@@ -1,6 +1,10 @@
 import type { Metadata } from 'next';
 import config from '@/app/util/config';
+import { checkHealth } from '@/app/services/health';
+
+import BreakAppButton from '@/app/components/BreakAppButton';
 import HeroImage from '@/app/components/HeroImage';
+import SystemFailurePane from '@/app/components/SystemFailurePane';
 import TodoForm from '@/app/components/TodoForm';
 import TodoList from '@/app/components/TodoList';
 
@@ -12,16 +16,23 @@ export const metadata: Metadata = {
 };
 
 const IndexPage = async () => {
-  return (
-    <div className="flex flex-col items-center w-full max-w-xl mx-auto">
-      <div>
-        <HeroImage />
-        <TodoForm maxLength={config.maxTodoLength} />
+  const isHealthy = await checkHealth();
+
+  if (isHealthy) {
+    return (
+      <div className="flex flex-col items-center w-full max-w-xl mx-auto">
+        <div>
+          <HeroImage />
+          <TodoForm maxLength={config.maxTodoLength} />
+        </div>
+        <h2>Todos</h2>
+        <TodoList />
+        <BreakAppButton />
       </div>
-      <h2>Todos</h2>
-      <TodoList />
-    </div>
-  );
+    );
+  } else {
+    return <SystemFailurePane />;
+  }
 };
 
 export default IndexPage;

@@ -9,4 +9,4 @@ resources:
   - manifests-gke/random-article-job.yml
 images:
   - name: TODO_APP_IMAGE
-    newName: alterho/todo-app:2.9
+    newName: alterho/todo-app:4.2

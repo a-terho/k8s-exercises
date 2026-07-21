@@ -1,10 +1,13 @@
 import 'dotenv/config';
-import express, { type Request } from 'express';
+import express, { type Request, type Response } from 'express';
 import morgan from 'morgan';
 import todoRouter from './routes/todos.ts';
+import { isDbReady } from './db/readiness.ts';
 
 const app = express();
 const PORT = process.env.PORT || 4000;
+
+let broken = false;
 
 app.use(express.json());
 
@@ -16,6 +19,27 @@ const logger = morgan(
 app.use(logger);
 
 app.use('/todos', todoRouter);
+
+app.post('/breakz', (_req, res: Response) => {
+  const prev = broken;
+  broken = true;
+  if (prev != broken) console.log('app has been broken');
+  return res.status(200).send('app is now broken');
+});
+
+app.get('/readyz', async (_req, res) => {
+  if (await isDbReady()) {
+    return res.status(200).json({ status: 'ready' });
+  }
+  return res.status(500).json({ status: 'not ready' });
+});
+
+app.get('/healthz', (_req, res: Response) => {
+  if (broken) {
+    return res.status(500).json({ status: 'unhealthy' });
+  }
+  return res.status(200).json({ status: 'ok' });
+});
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);

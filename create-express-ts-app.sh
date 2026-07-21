@@ -1,5 +1,5 @@
 #!/bin/bash
-# Express + TypeScript starter using Node's native TypeScript support
+# Express + TypeScript using tsx watch (currently wider support than Node's native TS)
 # Native TypeScript execution needs Node >= 22.18 (24.x LTS recommended)
 # Usage: ./create-express-ts-app.sh <app-name>
 
@@ -101,7 +101,7 @@ echo ""
 echo "Project '$PROJECT_NAME' created!"
 echo ""
 echo "cd $PROJECT_NAME"
-echo "npm run dev    # run + watch, uses Node's native TS support (no type-checking)"
+echo "npm run dev    # run + watch using tsx watch"
 echo "npm run check  # separately catch type errors with tsc"
 echo "npm run build  # compile to dist/ for production"
 echo "npm start      # run compiled JS"
