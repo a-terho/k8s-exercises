@@ -50,4 +50,5 @@ Sisältönä Kubernetes-kurssin harjoitukset. Suurin osa tekstistä on englannik
 
 - [4.1. Readines probe](https://github.com/a-terho/k8s-exercises/tree/4.1/log-output)
 - [4.2. The project, step 21](https://github.com/a-terho/k8s-exercises/tree/4.2/todo-app)
-- [4.3. Prometheus](https://github.com/a-terho/k8s-exercises/tree/4.3/prometheus)
+- [4.3. Prometheus](https://github.com/a-terho/k8s-exercises/tree/4.3/prometheus#promql)
+- [4.4. Your canary](https://github.com/a-terho/k8s-exercises/tree/4.4/ping-pong)

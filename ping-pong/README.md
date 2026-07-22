@@ -29,3 +29,5 @@ By default, applying the kustomization does not start the database service. The 
 ```bash
 kubectl apply manifests-gke/postgres-ss.yml
 ```
+
+For any consecutive new release, a canary rollout will take place. Analysis is done right after the deployment and if the CPU usage rate sum over 5 minutes gets too high, the rollout will be cancelled and the update is reverted.

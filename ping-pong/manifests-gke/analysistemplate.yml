@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: cpu-rate
+  namespace: exercises
+spec:
+  metrics:
+    - name: cpu-rate
+      initialDelay: 1m
+      interval: 1m # run analysis with 1 min interval
+      count: 5 # and run it 5 times
+      failureLimit: 0 # fail on first exception
+      successCondition: result < 0.005 # adding one more 0 will make it always fail
+      provider:
+        prometheus:
+          address: http://prom-prometheus-server.monitoring.svc.cluster.local:80
+          query: | # use 2 minute rate window for faster delta
+            scalar(sum(rate(container_cpu_usage_seconds_total{namespace="exercises", container!=""}[2m])))

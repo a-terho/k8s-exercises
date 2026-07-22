@@ -1,8 +1,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - manifests-gke/gke-dynamic-pvc.yml
   - manifests-gke/postgres-secret.yml
+  - manifests-gke/analysistemplate.yml
   - manifests-gke/deployment.yml
 images:
   - name: PINGPONG_APP_IMAGE
