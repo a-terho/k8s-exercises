@@ -3,6 +3,7 @@ import express, { type Request, type Response } from 'express';
 import morgan from 'morgan';
 import todoRouter from './routes/todos.ts';
 import { isDbReady } from './db/readiness.ts';
+import nats from './nats/index.ts';
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -41,6 +42,12 @@ app.get('/healthz', (_req, res: Response) => {
   return res.status(200).json({ status: 'ok' });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`Server running at http://localhost:${PORT}`);
+  try {
+    await nats.initialize();
+    console.log('Successfully connected to NATS');
+  } catch (err) {
+    console.log('Failed to connect to NATS');
+  }
 });

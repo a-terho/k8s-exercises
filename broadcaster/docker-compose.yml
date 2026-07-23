@@ -1,0 +1,36 @@
+services:
+  broadcaster:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: alterho/broadcaster:prod
+    container_name: broadcaster-prod
+    environment:
+      - NODE_ENV=production
+    networks:
+      - local-network
+
+  broadcaster-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: alterho/broadcaster:dev
+    container_name: broadcaster-dev
+    environment:
+      - NODE_ENV=development
+    volumes:
+      # use local bind mounts as Docker watch sync + tsx watch is unreliable
+      # with this setup only changes in /src file are reflected live to the container
+      # everything else is baked into the container at build time
+      - ./src:/app/src # /app is the WORKDIR in container
+    networks:
+      - local-network
+    develop:
+      watch:
+        - action: rebuild
+          path: package.json
+
+networks:
+  local-network:
+    external: true
+    name: local-network

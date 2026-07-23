@@ -4,6 +4,7 @@ import { db } from '../db/index.ts';
 import { todos } from '../db/schema.ts';
 import type { ApiError, Todo } from '../types.ts';
 import config from '../config.ts';
+import nats from '../nats/index.ts';
 
 const router = express.Router();
 export default router;
@@ -45,6 +46,7 @@ router.post(
 
       try {
         const newTodo = await db.insert(todos).values({ message }).returning();
+        nats.publish('todo_saved', JSON.stringify(newTodo[0]));
         return res.status(201).json(newTodo[0]);
       } catch (err) {
         if (err instanceof DrizzleQueryError) {
@@ -83,5 +85,6 @@ router.put('/:id', async (req: Request<{ id: string }>, res: Response) => {
     .set({ done: true })
     .where(eq(todos.id, id))
     .returning();
+  nats.publish('todo_updated', JSON.stringify(updated[0]));
   return res.status(200).json({ todo: updated[0] });
 });

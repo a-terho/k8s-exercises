@@ -7,6 +7,7 @@ services:
     container_name: todo-backend-prod
     depends_on:
       - database-migrations
+      - nats
     ports:
       - '4000:4000'
     environment:
@@ -22,6 +23,7 @@ services:
     container_name: todo-backend-dev
     depends_on:
       - database-migrations
+      - nats
     ports:
       - '4000:4000'
     environment:
@@ -57,3 +59,14 @@ services:
       - DATABASE_HOST=database
       - POSTGRES_PASSWORD=postgres
     command: ['npx', 'drizzle-kit', 'migrate']
+
+  nats:
+    image: nats:2.14-alpine
+    container_name: nats-service
+    ports:
+      - '4222:4222' # client traffic
+      - '8222:8222' # HTTP reporting
+
+networks:
+  default: # rename default network
+    name: local-network

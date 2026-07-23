@@ -20,7 +20,7 @@ helm upgrade --install loki grafana/loki \
 
 helm upgrade --install k8smon grafana/k8s-monitoring \
   --namespace monitoring \
-  --values demok8smon-values.yml
+  --values k8smon-values.yml
 
 helm upgrade --install grafana grafana/grafana \
   --namespace monitoring \
