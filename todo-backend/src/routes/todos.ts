@@ -1,5 +1,5 @@
 import express, { type Request, type Response } from 'express';
-import { DrizzleQueryError } from 'drizzle-orm';
+import { DrizzleQueryError, eq } from 'drizzle-orm';
 import { db } from '../db/index.ts';
 import { todos } from '../db/schema.ts';
 import type { ApiError, Todo } from '../types.ts';
@@ -62,3 +62,26 @@ router.post(
       .json({ error: { message: '"message" is required' } });
   },
 );
+
+router.put('/:id', async (req: Request<{ id: string }>, res: Response) => {
+  if (isNaN(Number(req.params.id)) || Number(req.params.id) < 0) {
+    return res
+      .status(404)
+      .json({ error: `'${req.params.id}' is not valid id` });
+  }
+  const id = Number(req.params.id);
+
+  const todo: Todo | undefined = await db.query.todos.findFirst({
+    where: (todos, { eq }) => eq(todos.id, id),
+  });
+  if (!todo) {
+    return res.status(404).json({ error: `Todo with id ${id} does not exist` });
+  }
+
+  const updated = await db
+    .update(todos)
+    .set({ done: true })
+    .where(eq(todos.id, id))
+    .returning();
+  return res.status(200).json({ todo: updated[0] });
+});

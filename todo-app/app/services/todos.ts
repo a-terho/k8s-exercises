@@ -23,5 +23,11 @@ export const addTodo = async (message: string): Promise<Todo | null> => {
   return res.json();
 };
 
-const todoService = { getTodos, addTodo };
+export const markTodoDone = async (id: string) => {
+  const res = await fetch(`${todoEndpoint}/${id}`, { method: 'put' });
+  if (!res.ok) return false;
+  return true;
+};
+
+const todoService = { getTodos, addTodo, markTodoDone };
 export default todoService;

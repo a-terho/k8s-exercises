@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath, revalidateTag } from 'next/cache';
-import { addTodo } from '@/app/services/todos';
+import { addTodo, markTodoDone } from '@/app/services/todos';
 import type { AddTodoState } from '@/app/types';
 import logger from '@/app/util/logger';
 
@@ -28,4 +28,10 @@ export const addTodoAction = async (
   revalidateTag('todos', 'max');
   revalidatePath('/');
   return { success: true };
+};
+
+export const markTodoDoneAction = async (formData: FormData) => {
+  const id = String(formData.get('id'));
+  await markTodoDone(id);
+  revalidatePath('/');
 };

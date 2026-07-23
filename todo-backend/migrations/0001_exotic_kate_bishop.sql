@@ -1,0 +1,1 @@
+ALTER TABLE "todos" ADD COLUMN "done" boolean DEFAULT false NOT NULL;
