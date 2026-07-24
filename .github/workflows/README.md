@@ -11,22 +11,30 @@ Placeholder `ORG/REPO` should point to the GitHub repository (in my case `a-terh
 gcloud iam service-accounts create "github-actions-sa" \
   --display-name="GitHub Actions SA"
 
-# Give permissions to push Docker images to Artifact Registry
+# Give workflow permissions to push Docker images to Artifact Registry
 gcloud projects add-iam-policy-binding PROJECT_ID \
   --role="roles/artifactregistry.writer" \
   --member="serviceAccount:github-actions-sa@PROJECT_ID.iam.gserviceaccount.com"
 
-# Give permissions to apply manifests to Kubernetes cluster
+# Give workflow permissions to apply manifests to Kubernetes cluster
 gcloud projects add-iam-policy-binding PROJECT_ID \
   --role="roles/container.developer" \
   --member="serviceAccount:github-actions-sa@PROJECT_ID.iam.gserviceaccount.com"
+
+# Give workflow permissions to use decryption keys stored in Key Management Service (KMS)
+# Note: This step is only required when using broadcaster service
+gcloud kms keys add-iam-policy-binding sops-key \
+  --location=global \
+  --keyring=broadcaster-secrets \
+  --member="serviceAccount:github-actions-sa@PROJECT_ID.iam.gserviceaccount.com" \
+  --role="roles/cloudkms.cryptoKeyDecrypter"
 
 # Create Workload Identity Pool to allow remote service authentication to GCP
 gcloud iam workload-identity-pools create "github-pool" \
   --location="global" \
   --display-name="GitHub Actions Pool"
 
-# Create OICD Identity
+# Create OIDC Identity
 gcloud iam workload-identity-pools providers create-oidc "github-provider" \
   --location="global" \
   --workload-identity-pool="github-pool" \

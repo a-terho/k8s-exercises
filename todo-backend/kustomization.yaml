@@ -10,4 +10,4 @@ resources:
   - manifests-gke/postgres-backup-cronjob.yml
 images:
   - name: TODO_BACKEND_IMAGE
-    newName: alterho/todo-backend:4.5
+    newName: alterho/todo-backend:4.6

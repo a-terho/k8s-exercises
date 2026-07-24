@@ -1,7 +1,12 @@
 dist/
+manifests*/
 node_modules/
 Dockerfile*
 docker-compose*.yml
+kustomization.yaml
+secret.yml
+README.md
 .dockerignore
 .env
 .gitignore
+.sops.yaml

@@ -1,25 +1,36 @@
-import 'dotenv/config';
+import config from './config.ts';
 import { connect, type NatsConnection } from '@nats-io/transport-node';
+import { sendMessage } from './telegram.ts';
 
 let nc: NatsConnection;
 
 export const initialize = async () => {
-  nc = await connect({
-    servers: process.env.NATS_URL || 'nats://nats:4222',
-  });
+  nc = await connect({ servers: config.nats_uri });
 
-  const todoCreatedSub = nc.subscribe('todo_saved');
+  const todoSavedSub = nc.subscribe('todo_saved', {
+    // create a queue group so only one of the workers receives the message
+    queue: 'broadcaster.workers',
+  });
   (async () => {
-    for await (const msg of todoCreatedSub) {
-      console.log(`received: ${msg.string()}`);
+    for await (const msg of todoSavedSub) {
+      // console.log(`received: ${msg.string()}`);
+      console.log('Sending a message to Telegram chat...');
+      await sendMessage('New todo was added!');
     }
+    console.log('Subscription todo_saved closed');
   })();
 
-  const todoUpdatedSub = nc.subscribe('todo_updated');
+  const todoUpdatedSub = nc.subscribe('todo_updated', {
+    // create a queue group so only one of the workers receives the message
+    queue: 'broadcaster.workers',
+  });
   (async () => {
     for await (const msg of todoUpdatedSub) {
-      console.log(`received: ${msg.string()}`);
+      // console.log(`received: ${msg.string()}`);
+      console.log('Sending a message to Telegram chat...');
+      await sendMessage('Todo was updated!');
     }
+    console.log('Subscription todo_updated closed');
   })();
 };
 

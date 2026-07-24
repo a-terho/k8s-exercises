@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: broadcaster-dep
+  namespace: project
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      app: broadcaster
+  template:
+    metadata:
+      labels:
+        app: broadcaster
+    spec:
+      containers:
+        - name: broadcaster
+          image: BROADCASTER_IMAGE
+          env:
+            - name: NATS_URI
+              value: 'my-nats-headless.nats.svc.cluster.local:4222'
+          envFrom:
+            - secretRef:
+                name: broadcaster-secret

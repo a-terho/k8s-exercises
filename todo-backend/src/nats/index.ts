@@ -4,7 +4,7 @@ let nc: NatsConnection;
 
 export const initialize = async () => {
   nc = await connect({
-    servers: process.env.NATS_URL || 'nats://nats:4222',
+    servers: process.env.NATS_URI || 'nats://nats:4222',
   });
 };
 

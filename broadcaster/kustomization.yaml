@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - manifests-gke/secret.yml
+  - manifests-gke/deployment.yml
+images:
+  - name: BROADCASTER_IMAGE
+    newName: alterho/broadcaster:4.6.2

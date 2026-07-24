@@ -1,0 +1,3 @@
+creation_rules:
+  - path_regex: secret\.yml$
+    gcp_kms: projects/dwk-gke-501808/locations/global/keyRings/broadcaster-secrets/cryptoKeys/sops-key
