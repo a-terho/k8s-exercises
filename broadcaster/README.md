@@ -29,6 +29,8 @@ gcloud kms keys create sops-key \
   --purpose=encryption
 ```
 
+GitHub Actions workflow takes care of automatic deployment.
+
 For non-automated locally applied deployments [`sops`](https://getsops.io/docs/installation/) needs to be installed.
 
 1. Authenticate locally with gcloud CLI using Application Default Credentials (ADC) and grant permissions for your account to use decryption keys in Google Cloud KMS.
@@ -76,4 +78,10 @@ In local workflow, manifests can be applied with this command:
 
 ```bash
 sops --decrypt manifests-gke/secret.enc.yml > manifests-gke/secret.yml && kubectl apply -k . && rm manifests-gke/secret.yml
+```
+
+By default deployment creates six pod replicas. To apply horizontal pod autoscaler manually, you can use the following command:
+
+```bash
+kubectl apply -f manifests-gke/autoscaler.yml
 ```
