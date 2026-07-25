@@ -17,7 +17,7 @@ helm upgrade --install my-nats nats/nats \
   --set promExporter.enabled=true
 ```
 
-Create encryption keys inside KSM using the following commands.
+Create encryption keys inside KMS using the following commands.
 
 ```bash
 gcloud kms keyrings create broadcaster-secrets \
@@ -67,7 +67,7 @@ data:
   TELEGRAM_CHAT_ID:
 ```
 
-4. Create encrypted version of the secrets file using Google KMS public keys. Optionally, delete the original file. `secret.yml` is added to `.gitignore`.
+4. Create encrypted version of the secrets file using Google Cloud KMS public keys. Optionally, delete the original file. `secret.yml` is added to `.gitignore` so it will not be committed.
 
 ```bash
 sops --encrypt secret.yml > manifests-gke/secret.enc.yml

@@ -24,7 +24,7 @@ The logs should have printed `Server running at port 3000` and there should a st
 The gateway setup may take a few minutes. Once it's ready, you can connect to the address that is printed with the following command. If it does not print an address, you need to wait and try again in a few minutes. And even when the IP is available, it might still say something like `fault filter abort` and take a while before it works. **ping-pong** application is routed through the same gateway as **log-output**. With the current configuration, the endpoint is not marked ready if the **ping-pong** application is not available. This could cause the endpoint not to be reachable in some clusters even when the app is otherwise working properly (debug readiness probe with `kubectl describe pods/log-output-dep-<pod id>`). GKE Gateway API, however, does not acknowledge this readiness probe when routing traffic.
 
 ```bash
-echo http://$(kubectl get gateway | grep log-output-gateway | grep -oE '([0-9]{1,3}\.){3}[0-9]{1,3}')
+echo http://$(kubectl get gateway --namespace=exercises | grep log-output-gateway | grep -oE '([0-9]{1,3}\.){3}[0-9]{1,3}')
 ```
 
 If **ping-pong** application is not ready, the page will display `<connection error>`. The application can be started with:
@@ -36,7 +36,7 @@ kubectl apply -k ../ping-pong
 To check its status, use:
 
 ```bash
-kubectl logs -f deployment/ping-pong-dep --namespace=exercises
+kubectl logs -f -l app=ping-pong --all-containers=true --namespace=exercises
 ```
 
 By default, applying the kustomization does not start the database service. The application will work but it does not persist data before starting the database. The endpoint will only display what is saved into RAM. The database can be started with:
