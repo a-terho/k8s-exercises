@@ -1,4 +1,5 @@
-# Kubernetes manifests
+# Kubernetes related
+argocd/
 manifests*/
 kustomization.yaml
 

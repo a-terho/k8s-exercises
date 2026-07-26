@@ -6,8 +6,6 @@ on:
     paths: ['todo-backend/**']
 
 env:
-  # GKE_CLUSTER: dwk-cluster
-  # GKE_ZONE: europe-north1-b
   REGISTRY: europe-north1-docker.pkg.dev
   REPOSITORY: docker-images
   MAIN_NAMESPACE: project
@@ -49,13 +47,6 @@ jobs:
       - name: 'Configure Docker authentication with gcloud CLI'
         run: gcloud auth configure-docker "$REGISTRY"
 
-      # - name: 'Get GKE credentials'
-      #   uses: 'google-github-actions/get-gke-credentials@v3'
-      #   with:
-      #     cluster_name: '${{ env.GKE_CLUSTER }}'
-      #     project_id: '${{ env.PROJECT_ID }}'
-      #     location: '${{ env.GKE_ZONE }}'
-
       - name: Form the image name and save to environment
         id: image
         run: |-
@@ -83,6 +74,11 @@ jobs:
     # Load required environment variables from previous job
     env:
       IMAGE_TAG: '${{ needs.build-publish.outputs.IMAGE_TAG }}'
+
+    # Add commit concurrency serialization
+    concurrency:
+      group: kustomization-commit-${{ github.ref_name }}
+      cancel-in-progress: false
 
     steps:
       - name: Checkout
@@ -112,3 +108,4 @@ jobs:
           cwd: './todo-backend'
           add: 'kustomization.yaml'
           message: New version of todo-backend released ${{ github.sha }}
+          pull: '--rebase --autostash' # pull with rebasing before push
