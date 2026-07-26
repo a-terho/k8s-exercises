@@ -72,10 +72,15 @@ These are assumptions that workflows make about GKE cluster and Artifact Registr
 - Repository in the Artifact Registry is deployed to `europe-north1` region with name `docker-images`
 
 Workflows use GitHub Actions Secrets that are scoped to environment called **GKE_PROJECT**  
-Secrets are listed in GitHub repository **Settings** -> **Environments** -> **GKE_PROJECT**  
-Following Secrets need to be defined. Replace placeholders accordingly.
+Secrets and variables are listed in GitHub repository **Settings** -> **Environments** -> **GKE_PROJECT**  
+Following Secrets and variables need to be defined. Replace placeholders accordingly.
+
+Variables:
 
 - `GKE_PROJECT_ID`: `PROJECT_ID`
+
+Secrets:
+
 - `SERVICE_ACCOUNT`: github-actions-sa@`PROJECT_ID`.iam.gserviceaccount.com
 - `WORKLOAD_IDENTITY_PROVIDER`: projects/`PROJECT_NUMBER`/locations/global/workloadIdentityPools/github-pool/providers/github-provider
 

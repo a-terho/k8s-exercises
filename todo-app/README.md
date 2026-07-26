@@ -109,3 +109,5 @@ Cons:
 This is what Google Cloud Console Logs Explorer shows when new todos are added.
 
 ![Logs explorer](./logs.png)
+
+.

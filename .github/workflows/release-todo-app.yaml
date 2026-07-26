@@ -18,10 +18,10 @@ jobs:
     name: Build and Publish
     runs-on: ubuntu-latest
 
-    # Use environment scoped secrets
+    # Use environment scoped variables and secrets
     environment: GKE_PROJECT
     env:
-      PROJECT_ID: '${{ secrets.GKE_PROJECT_ID }}'
+      PROJECT_ID: '${{ vars.GKE_PROJECT_ID }}'
 
     # These are apparently required for Google Cloud Auth and Setup
     permissions:
