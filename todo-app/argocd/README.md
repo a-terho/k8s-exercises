@@ -39,4 +39,4 @@ Second, **todo-backend**
 ![Settings](./settings3_2.png)
 ![Settings](./settings4.png)
 
-In order for the automated workflow to work properly, reference [README.md file in the workflows folder](../../.github/workflows/README.md) for GKE initialization and repository setup. In addition, GitHub Actions permissions need to changed under **Settings** -> **Actions** -> **General** -> **Workflow permissions** to **Read and write permissions**.
+In order for the automated workflow to work properly, reference [README.md file in the workflows folder](../../.github/workflows/README.md) for GKE initialization and repository setup. In addition, GitHub Actions permissions need to be changed under **Settings** -> **Actions** -> **General** -> **Workflow permissions** to **Read and write permissions**.
