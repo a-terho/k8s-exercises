@@ -1,13 +1,15 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - manifests-gke/postgres-config.yml
-  - manifests-gke/postgres-secret.yml
-  - manifests-gke/postgres-ss.yml
-  - manifests-gke/deployment.yml
-  - manifests-gke/service.yml
-  - manifests-gke/postgres-migration-job.yml
-  - manifests-gke/postgres-backup-cronjob.yml
+- manifests-gke/postgres-config.yml
+- manifests-gke/postgres-secret.yml
+- manifests-gke/postgres-ss.yml
+- manifests-gke/deployment.yml
+- manifests-gke/service.yml
+- manifests-gke/postgres-migration-job.yml
+- manifests-gke/postgres-backup-cronjob.yml
 images:
-  - name: TODO_BACKEND_IMAGE
-    newName: alterho/todo-backend:4.6
+- name: TODO_BACKEND_IMAGE
+  newName: europe-north1-docker.pkg.dev/dwk-gke-501808/docker-images/todo-backend
+  newTag: project-argocd-5e2cc77017bb08df57381d8591b53777ed095dea
+namespace: project-argocd

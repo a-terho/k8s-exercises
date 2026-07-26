@@ -3,6 +3,13 @@ kind: Job
 metadata:
   name: db-migrate
   namespace: project
+  annotations:
+    # give ArgoCD instructions on how to prepare for this job
+    # currently, at each sync, it runs in the second wave after
+    # all other manifests and deletes the previous migration job
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+    argocd.argoproj.io/sync-wave: '1'
 spec:
   template:
     spec:
