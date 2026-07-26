@@ -1,12 +1,12 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - manifests-gke/namespace.yml
-  - manifests-gke/gke-dynamic-pvc.yml
-  - manifests-gke/deployment.yml
-  - manifests-gke/service.yml
-  - manifests-gke/ingress.yml
-  - manifests-gke/random-article-job.yml
+- manifests-gke/namespace.yml
+- manifests-gke/gke-dynamic-pvc.yml
+- manifests-gke/deployment.yml
+- manifests-gke/service.yml
+- manifests-gke/ingress.yml
+- manifests-gke/random-article-job.yml
 images:
-  - name: TODO_APP_IMAGE
-    newName: alterho/todo-app:4.5
+- name: TODO_APP_IMAGE
+namespace: project-argocd
