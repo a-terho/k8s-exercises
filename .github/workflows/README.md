@@ -66,10 +66,7 @@ gcloud projects get-iam-policy PROJECT_ID \
 
 ## Repository setup
 
-These are assumptions that workflows make about GKE cluster and Artifact Registry setup. If they differ, change the hard-coded values in both .yaml files.
-
-- Cluster is created with name `dwk-cluster` to zone `europe-north1-b`
-- Repository in the Artifact Registry is deployed to `europe-north1` region with name `docker-images`
+Workflows make assumptions about the Artifact Registry setup. Repository is deployed to `europe-north1` region with name `docker-images`. If they differ, change the hard-coded values in both .yaml files.
 
 Workflows use GitHub Actions Secrets that are scoped to environment called **GKE_PROJECT**  
 Secrets and variables are listed in GitHub repository **Settings** -> **Environments** -> **GKE_PROJECT**  
