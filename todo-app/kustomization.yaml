@@ -9,4 +9,6 @@ resources:
 - manifests-gke/random-article-job.yml
 images:
 - name: TODO_APP_IMAGE
+  newName: europe-north1-docker.pkg.dev/dwk-gke-501808/docker-images/todo-app
+  newTag: project-argocd-ddb4b712c0d10d081d3453dfc688b683767b06a7
 namespace: project-argocd
