@@ -1,18 +1,18 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- manifests-gke/config-map.yml
-- manifests-gke/gateway.yml
-- manifests-gke/deployment.yml
-- manifests-gke/log-output-svc.yml
-- manifests-gke/ping-pong-svc.yml
-- manifests-gke/log-output-route.yml
-- manifests-gke/ping-pong-route.yml
+  - manifests-gke/config-map.yml
+  - manifests-gke/gateway.yml
+  - manifests-gke/deployment.yml
+  - manifests-gke/log-output-svc.yml
+  - manifests-gke/ping-pong-svc.yml
+  - manifests-gke/log-output-route.yml
+  - manifests-gke/ping-pong-route.yml
 images:
-- name: LOGREAD_APP_IMAGE
-  newName: alterho/log-output
-  newTag: main-read-0bfcdad782de4201e203bc1d9926ad6f683e7f72
-- name: LOGWRITE_APP_IMAGE
-  newName: alterho/log-output
-  newTag: main-write-0bfcdad782de4201e203bc1d9926ad6f683e7f72
+  - name: LOGREAD_APP_IMAGE
+    newName: alterho/log-output
+    newTag: main-read-0bfcdad782de4201e203bc1d9926ad6f683e7f72
+  - name: LOGWRITE_APP_IMAGE
+    newName: alterho/log-output
+    newTag: main-write-0bfcdad782de4201e203bc1d9926ad6f683e7f72
 namespace: exercises

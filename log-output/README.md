@@ -2,6 +2,8 @@
 
 These instructions are for deploying the **log-output** and **ping-pong** applications on the Google Kubernetes Engine (GKE). To deploy them into a local `k3d` cluster instead, [follow the instructions here](./README-k3d.md).
 
+To see how to setup deployment system using ArgoCD, check [argocd](./argocd/) folder.
+
 ---
 
 First make sure the Kubernetes cluster is running on GKE, Gateway API is enabled in the cluster and `kubectl` points to cluster context.

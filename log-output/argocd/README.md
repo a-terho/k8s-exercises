@@ -1,6 +1,6 @@
 # add log-output as ArgoCD app
 
-First make sure the Kubernetes cluster is running on GKE and Gateway API is enabled in the cluster.
+First make sure the Kubernetes cluster is running on GKE and Gateway API is enabled in the cluster and `kubectl` points to cluster context.
 
 Add ArgoCD to the cluster:
 
@@ -32,9 +32,10 @@ Create **NEW APP** with following settings:
 ![Settings](./settings3.png)
 ![Settings](./settings4.png)
 
-The syncing process should start after creation. If **ping-pong** application and its database is not running, ArgoCD will eventually report service as being degraded. To fix this, follow the instruction in the [log-ouput README.md file](../README.md). This should turn service to healthy state.
+The syncing process should start after creation. If **ping-pong** application and its database is not running, ArgoCD will eventually report service as being degraded. To fix this, follow the instruction in the [log-output README.md file](../README.md). This should turn service to healthy state.
 
-In order for the automated workflow to work properly, both:
+In order for the automated workflow to work properly, all of these need to be set properly:
 
-- `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN` need to be set in **Settings** -> **Secrets and variables** -> **Actions** -> **Repository secrets**.
-- GitHub Action permissions need to changed under **Settings** -> **Actions** -> **General** -> **Workflow permissions** to **Read and write permissions**.
+- `DOCKERHUB_USERNAME` needs to be set in **Settings** -> **Secrets and variables** -> **Actions** -> **Variables** -> **Repository variables**.
+- `DOCKERHUB_TOKEN` (which has write permissions for your Docker Hub account) needs to be set in **Settings** -> **Secrets and variables** -> **Actions** -> **Secrets** -> **Repository secrets**.
+- GitHub Actions permissions need to changed under **Settings** -> **Actions** -> **General** -> **Workflow permissions** to **Read and write permissions**.
