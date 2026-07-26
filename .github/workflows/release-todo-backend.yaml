@@ -11,8 +11,8 @@ permissions:
   id-token: write
 
 jobs:
-  build-publish-deploy:
-    name: Build, Publish and Deploy
+  build-publish:
+    name: Build and Publish
     runs-on: ubuntu-latest
 
     # Use environment scoped variables and secrets
@@ -40,8 +40,8 @@ jobs:
       - name: 'Set up Cloud SDK'
         uses: google-github-actions/setup-gcloud@v3
 
-      - name: 'Use gcloud CLI'
-        run: gcloud info
+      # - name: 'Use gcloud CLI'
+      #   run: gcloud info
 
       - name: 'Configure Docker authentication with gcloud CLI'
         run: gcloud auth configure-docker "$REGISTRY"
@@ -78,16 +78,15 @@ jobs:
           kubectl create namespace "$K8S_NAMESPACE" || true
           kubectl config set-context --current --namespace="$K8S_NAMESPACE"
 
-      # Delete db-migrate job if it already exists (immutability constraint)
-      # This should probably be fixed directly inside the manifests later...
-      - name: Delete old database migration job if it exists
-        run: kubectl delete job db-migrate -n "$K8S_NAMESPACE" --ignore-not-found=true
-
-      - name: Deploy
+      - name: Modify kustomization.yaml to use right namespace and image
         working-directory: todo-backend
         run: |-
           kustomize edit set namespace "$K8S_NAMESPACE"
           kustomize edit set image TODO_BACKEND_IMAGE="$IMAGE_TAG"
-          kustomize build . | kubectl apply -f -
-          kubectl rollout status deployment "$DEPLOYMENT" -n "$K8S_NAMESPACE"
-          kubectl get services -o wide -n "$K8S_NAMESPACE"
+
+      - name: Commit kustomization.yaml to GitHub
+        uses: EndBug/add-and-commit@v10
+        with:
+          cwd: './todo-backend'
+          add: 'kustomization.yaml'
+          message: New version of todo-backend released ${{ github.sha }}

@@ -55,3 +55,4 @@ Sisältönä Kubernetes-kurssin harjoitukset. Suurin osa tekstistä on englannik
 - [4.5. The project, step 22](https://github.com/a-terho/k8s-exercises/tree/4.5/todo-app)
 - [4.6. The project, step 23](https://github.com/a-terho/k8s-exercises/tree/4.6/broadcaster)
 - [4.7. Baby steps to GitOps](https://github.com/a-terho/k8s-exercises/tree/4.7/log-output/argocd)
+- [4.8. The project, step 24](https://github.com/a-terho/k8s-exercises/tree/4.8/todo-app/argocd)
