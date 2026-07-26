@@ -11,5 +11,5 @@ resources:
 images:
 - name: TODO_BACKEND_IMAGE
   newName: europe-north1-docker.pkg.dev/dwk-gke-501808/docker-images/todo-backend
-  newTag: project-argocd-5e2cc77017bb08df57381d8591b53777ed095dea
-namespace: project-argocd
+  newTag: main-c87c967d18e04fbe061a5d1dc7f378eb48e19ca9
+namespace: project
