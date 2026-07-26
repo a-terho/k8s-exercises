@@ -2,6 +2,8 @@
 
 These instructions are for deploying the application on the Google Kubernetes Engine (GKE). To deploy it into a local `k3d` cluster instead, [follow the instructions here](./README-k3d.md).
 
+To see how to setup deployment system using ArgoCD, check [argocd](./argocd/) folder.
+
 ---
 
 First make sure the Kubernetes cluster is running on GKE and `kubectl` points to its context. Then apply manifests from the `kustomization.yaml` file with:
