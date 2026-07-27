@@ -4,9 +4,9 @@ on:
   push:
     branches: ['main']
     paths:
-      - broadcaster
-      - todo-app
-      - todo-backend
+      - 'broadcaster/**'
+      - 'todo-app/**'
+      - 'todo-backend/**'
 
 env:
   REGISTRY: europe-north1-docker.pkg.dev
