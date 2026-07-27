@@ -17,6 +17,7 @@ jobs:
     environment: GKE_PROJECT
     env:
       PROJECT_ID: '${{ vars.GKE_PROJECT_ID }}'
+      RELEASE_TAG: '${{ github.ref_name }}'
 
     # These are apparently required for Google Cloud Auth and Setup
     permissions:
@@ -47,9 +48,9 @@ jobs:
       - name: Form the image names and save to environment
         id: image
         run: |-
-          BROADCASTER_TAG="$REGISTRY/$PROJECT_ID/$REPOSITORY/broadcaster:prod-$GITHUB_SHA"
-          APP_TAG="$REGISTRY/$PROJECT_ID/$REPOSITORY/todo-app:prod-$GITHUB_SHA"
-          BACKEND_TAG="$REGISTRY/$PROJECT_ID/$REPOSITORY/todo-backend:prod-$GITHUB_SHA"
+          BROADCASTER_TAG="$REGISTRY/$PROJECT_ID/$REPOSITORY/broadcaster:prod-$RELEASE_TAG"
+          APP_TAG="$REGISTRY/$PROJECT_ID/$REPOSITORY/todo-app:prod-$RELEASE_TAG"
+          BACKEND_TAG="$REGISTRY/$PROJECT_ID/$REPOSITORY/todo-backend:prod-$RELEASE_TAG"
           echo "BROADCASTER_TAG=$BROADCASTER_TAG" >> "$GITHUB_ENV"
           echo "BROADCASTER_TAG=$BROADCASTER_TAG" >> "$GITHUB_OUTPUT"
           echo "APP_TAG=$APP_TAG" >> "$GITHUB_ENV"
