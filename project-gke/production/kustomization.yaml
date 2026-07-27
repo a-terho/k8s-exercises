@@ -30,12 +30,12 @@ replacements:
 images:
 - name: BROADCASTER_IMAGE
   newName: europe-north1-docker.pkg.dev/dwk-gke-501808/docker-images/broadcaster
-  newTag: prod-4c420892f0ef9a3cced3de6ac00f1ed30105dd6c
+  newTag: prod-4.9
 - name: TODO_APP_IMAGE
   newName: europe-north1-docker.pkg.dev/dwk-gke-501808/docker-images/todo-app
-  newTag: prod-4c420892f0ef9a3cced3de6ac00f1ed30105dd6c
+  newTag: prod-4.9
 - name: TODO_BACKEND_IMAGE
   newName: europe-north1-docker.pkg.dev/dwk-gke-501808/docker-images/todo-backend
-  newTag: prod-4c420892f0ef9a3cced3de6ac00f1ed30105dd6c
+  newTag: prod-4.9
 namespace: production
 namePrefix: prod-
