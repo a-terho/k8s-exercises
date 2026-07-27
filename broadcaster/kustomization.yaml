@@ -6,3 +6,4 @@ resources:
 images:
   - name: BROADCASTER_IMAGE
     newName: alterho/broadcaster:4.9
+namespace: project

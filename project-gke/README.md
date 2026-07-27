@@ -18,19 +18,7 @@ kubectl apply -f staging/application.yaml
 kubectl apply -f production/application.yaml
 ```
 
-The only additional resource that needs to be applied manually is the Secret manifest for the broadcaster resource. Follow the instructions in [brodcaster README.md](../broadcaster/README.md) to setup Google Cloud Key Management Service (KMS) and apply `secret.yml` file directly to the relevant namespace (`staging` or `production`) with `kubectl apply -f secret.yml --namespace=<namespace>`. Secret manifest file must not specify a namespace in order for this command to work properly.
-
-```yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: broadcaster-secret
-  # no namespace here
-data:
-  DISCORD_WEBHOOK:
-  TELEGRAM_BOT_TOKEN:
-  TELEGRAM_CHAT_ID:
-```
+The only additional resource that needs to be applied manually is the Secret manifest for the broadcaster resource. Follow the instructions in [brodcaster README.md](../broadcaster/README.md) to setup Google Cloud Key Management Service (KMS) and apply `secret.yml` file directly to the relevant namespace (`staging` or `production`) with `kubectl apply -f secret.yml --namespace=<namespace>`.
 
 Add a way to access ArgoCD from outside the cluster (from the web interface or CLI) by exposing the service IP through LoadBalancer resouce. IP can be printed with the following command when it is available.
 

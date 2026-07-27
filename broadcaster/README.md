@@ -60,7 +60,6 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: broadcaster-secret
-  namespace: project
 data:
   DISCORD_WEBHOOK:
   TELEGRAM_BOT_TOKEN:
