@@ -7,15 +7,17 @@ let nc: NatsConnection;
 export const initialize = async () => {
   nc = await connect({ servers: config.nats_uri });
 
-  const todoSavedSub = nc.subscribe('todo_saved', {
+  const namespace = config.operating_mode;
+
+  const todoSavedSub = nc.subscribe(`${namespace}.todo_saved`, {
     // create a queue group so only one of the workers receives the message
-    queue: 'broadcaster.workers',
+    queue: `broadcaster.workers.${namespace}`,
   });
   (async () => {
     for await (const msg of todoSavedSub) {
       // console.log(`received: ${msg.string()}`);
       const message = 'New todo was added!';
-      if (config.operating_mode == 'forward') {
+      if (config.operating_mode === 'forward') {
         console.log('Sending a message to Telegram chat...');
         await sendMessage(message);
       } else {
@@ -25,15 +27,15 @@ export const initialize = async () => {
     console.log('Subscription todo_saved closed');
   })();
 
-  const todoUpdatedSub = nc.subscribe('todo_updated', {
+  const todoUpdatedSub = nc.subscribe(`${namespace}.todo_updated`, {
     // create a queue group so only one of the workers receives the message
-    queue: 'broadcaster.workers',
+    queue: `broadcaster.workers.${namespace}`,
   });
   (async () => {
     for await (const msg of todoUpdatedSub) {
       // console.log(`received: ${msg.string()}`);
       const message = 'Todo was updated!';
-      if (config.operating_mode == 'forward') {
+      if (config.operating_mode === 'forward') {
         console.log('Sending a message to Telegram chat...');
         await sendMessage(message);
       } else {
