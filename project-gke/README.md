@@ -36,6 +36,6 @@ Login to ArgoCD. Default `admin` account password can be printed with this comma
 kubectl get -n argocd secrets argocd-initial-admin-secret -o yaml | grep "password:" | awk '{print $2}' | base64 -d
 ```
 
-In order for the automated workflow to work properly, reference [README.md file in the workflows folder](../../.github/workflows/README.md) for GKE initialization and repository setup. In addition, GitHub Actions permissions need to be changed under **Settings** -> **Actions** -> **General** -> **Workflow permissions** to **Read and write permissions**.
+In order for the automated workflow to work properly, reference [README.md file in the workflows folder](../.github/workflows/README.md) for GKE initialization and repository setup. In addition, GitHub Actions permissions need to be changed under **Settings** -> **Actions** -> **General** -> **Workflow permissions** to **Read and write permissions**.
 
 Database backup job runs only in `production` namespace. Follow [Authenticating database backup system guide in workflows README.md file](../.github/workflows/README.md#authenticating-database-backup-system), but replace namespace `project` with `production`.
