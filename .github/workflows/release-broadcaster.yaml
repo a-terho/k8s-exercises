@@ -2,7 +2,7 @@ name: Release broadcaster
 
 on:
   push:
-    branches: ['**'] # only trigger for branches, not tags
+    branches: ['none'] # only trigger for branches, not tags
     paths: ['broadcaster/**']
 
 # These are apparently required for Google Cloud Auth and Setup

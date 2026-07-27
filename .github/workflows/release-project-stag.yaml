@@ -1,0 +1,116 @@
+name: Release project (staging)
+
+on:
+  push:
+    branches: ['main']
+    paths:
+      - broadcaster
+      - todo-app
+      - todo-backend
+
+env:
+  REGISTRY: europe-north1-docker.pkg.dev
+  REPOSITORY: docker-images
+
+jobs:
+  build-publish:
+    name: Build and Publish
+    runs-on: ubuntu-latest
+
+    # Use environment scoped variables and secrets
+    environment: GKE_PROJECT
+    env:
+      PROJECT_ID: '${{ vars.GKE_PROJECT_ID }}'
+
+    # These are apparently required for Google Cloud Auth and Setup
+    permissions:
+      contents: read
+      id-token: write
+
+    # Specify outputs used in the dependent job
+    outputs:
+      BROADCASTER_TAG: ${{ steps.image.outputs.BROADCASTER_TAG }}
+      APP_TAG: ${{ steps.image.outputs.APP_TAG }}
+      BACKEND_TAG: ${{ steps.image.outputs.BACKEND_TAG }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
+          service_account: '${{ secrets.SERVICE_ACCOUNT }}'
+
+      - name: 'Set up Cloud SDK'
+        uses: google-github-actions/setup-gcloud@v3
+
+      - name: 'Configure Docker authentication with gcloud CLI'
+        run: gcloud auth configure-docker "$REGISTRY"
+
+      - name: Form the image names and save to environment
+        id: image
+        run: |-
+          BROADCASTER_TAG="$REGISTRY/$PROJECT_ID/$REPOSITORY/broadcaster:main-$GITHUB_SHA"
+          APP_TAG="$REGISTRY/$PROJECT_ID/$REPOSITORY/todo-app:main-$GITHUB_SHA"
+          BACKEND_TAG="$REGISTRY/$PROJECT_ID/$REPOSITORY/todo-backend:main-$GITHUB_SHA"
+          echo "BROADCASTER_TAG=$BROADCASTER_TAG" >> "$GITHUB_ENV"
+          echo "BROADCASTER_TAG=$BROADCASTER_TAG" >> "$GITHUB_OUTPUT"
+          echo "APP_TAG=$APP_TAG" >> "$GITHUB_ENV"
+          echo "APP_TAG=$APP_TAG" >> "$GITHUB_OUTPUT"
+          echo "BACKEND_TAG=$BACKEND_TAG" >> "$GITHUB_ENV"
+          echo "BACKEND_TAG=$BACKEND_TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Build broadcaster
+        working-directory: broadcaster
+        run: docker build --tag "$BROADCASTER_TAG" .
+
+      - name: Build todo-app
+        working-directory: todo-app
+        run: docker build --tag "$APP_TAG" .
+
+      - name: Build todo-backend
+        working-directory: todo-backend
+        run: docker build --tag "$BACKEND_TAG" .
+
+      - name: Publish all
+        run: |-
+          docker push "$BROADCASTER_TAG"
+          docker push "$APP_TAG"
+          docker push "$BACKEND_TAG"
+
+  update-kustomization:
+    name: Update kustomization.yaml
+    runs-on: ubuntu-latest
+    needs: build-publish
+
+    # Setup repository write permissions
+    permissions:
+      contents: write
+
+    # Load required environment variables from previous job
+    env:
+      BROADCASTER_TAG: '${{ needs.build-publish.outputs.BROADCASTER_TAG }}'
+      APP_TAG: '${{ needs.build-publish.outputs.APP_TAG }}'
+      BACKEND_TAG: '${{ needs.build-publish.outputs.BACKEND_TAG }}'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Kustomize
+        uses: imranismail/setup-kustomize@v3
+
+      - name: Modify kustomization.yaml to use right images
+        working-directory: project-gke/staging
+        run: |-
+          kustomize edit set image BROADCASTER_IMAGE="$BROADCASTER_TAG"
+          kustomize edit set image TODO_APP_IMAGE="$APP_TAG"
+          kustomize edit set image TODO_BACKEND_IMAGE="$BACKEND_TAG"
+
+      - name: Commit kustomization.yaml to GitHub
+        uses: EndBug/add-and-commit@v10
+        with:
+          cwd: './project-gke/staging'
+          add: 'kustomization.yaml'
+          message: New version of project released ${{ github.sha }}

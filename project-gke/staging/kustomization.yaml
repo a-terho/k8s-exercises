@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - namespace.yml
+  - ./../base
+images:
+  - name: BROADCASTER_IMAGE
+    newName: alterho/broadcaster:4.9
+  - name: TODO_APP_IMAGE
+    newName: europe-north1-docker.pkg.dev/dwk-gke-501808/docker-images/todo-app
+    newTag: main-1046c7c2a93c04ed5340de916ec9a1c4c74a4442
+  - name: TODO_BACKEND_IMAGE
+    newName: europe-north1-docker.pkg.dev/dwk-gke-501808/docker-images/todo-backend
+    newTag: main-c87c967d18e04fbe061a5d1dc7f378eb48e19ca9
+namespace: staging
+namePrefix: stag-

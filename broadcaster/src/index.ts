@@ -14,8 +14,13 @@ export const initialize = async () => {
   (async () => {
     for await (const msg of todoSavedSub) {
       // console.log(`received: ${msg.string()}`);
-      console.log('Sending a message to Telegram chat...');
-      await sendMessage('New todo was added!');
+      const message = 'New todo was added!';
+      if (config.operating_mode == 'forward') {
+        console.log('Sending a message to Telegram chat...');
+        await sendMessage(message);
+      } else {
+        console.log(message);
+      }
     }
     console.log('Subscription todo_saved closed');
   })();
@@ -27,8 +32,13 @@ export const initialize = async () => {
   (async () => {
     for await (const msg of todoUpdatedSub) {
       // console.log(`received: ${msg.string()}`);
-      console.log('Sending a message to Telegram chat...');
-      await sendMessage('Todo was updated!');
+      const message = 'Todo was updated!';
+      if (config.operating_mode == 'forward') {
+        console.log('Sending a message to Telegram chat...');
+        await sendMessage(message);
+      } else {
+        console.log(message);
+      }
     }
     console.log('Subscription todo_updated closed');
   })();

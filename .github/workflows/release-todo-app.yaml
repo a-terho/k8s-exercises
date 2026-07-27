@@ -2,7 +2,7 @@ name: Release todo-app
 
 on:
   push:
-    branches: ['**'] # only trigger for branches, not tags
+    branches: ['none'] # only trigger for branches, not tags
     paths: ['todo-app/**']
 
 env:
