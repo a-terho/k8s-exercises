@@ -26,9 +26,12 @@ spec:
             - name: app-cache
               mountPath: /app/cache
               subPath: todo-app # use a subfolder inside the PV
+          envFrom:
+            - configMapRef:
+                name: backend-config
           env:
             - name: BACKEND_URL
-              value: 'http://todo-backend-svc:1234'
+              value: 'http://$(BACKEND_HOST):$(BACKEND_PORT)'
             - name: PICTURE_URL
               value: 'https://picsum.photos/1200'
             - name: PICTURE_TTL_MINS

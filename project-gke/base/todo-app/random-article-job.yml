@@ -13,13 +13,16 @@ spec:
           containers:
             - name: post-random-article
               image: busybox:1.38
+              envFrom:
+                - configMapRef:
+                    name: backend-config
               command:
                 - /bin/sh
                 - -c
                 - | # posting happens only if backend service is available
                   echo 'Running cronjob'
-                  if nc -z -w2 todo-backend-svc 1234 2>/dev/null; then
+                  if nc -z -w2 "$BACKEND_HOST" "$BACKEND_PORT" 2>/dev/null; then
                     echo 'Backend available, sending random article link'
                     ARTICLE_LINK=$(wget -S -U "Mozilla/5.0 (compatible; test-script)" -O - https://en.wikipedia.org/wiki/Special:Random 2>&1 | grep "location:" | awk -F// '{print $NF}')
-                    wget --post-data="{\"message\":\"Read https://$ARTICLE_LINK\"}" --header='Content-Type: application/json' -O - http://todo-backend-svc:1234/todos
+                    wget --post-data="{\"message\":\"Read https://$ARTICLE_LINK\"}" --header='Content-Type: application/json' -O - "http://$BACKEND_HOST:$BACKEND_PORT/todos"
                   fi
