@@ -1,17 +1,28 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- namespace.yml
-- ./../base
+  - namespace.yml
+  - ./../base
+replacements: # replace DATABASE_HOST so it points to correct service name
+  - source:
+      kind: Service
+      name: postgres-svc
+      fieldPath: metadata.name
+    targets:
+      - select:
+          kind: ConfigMap
+          name: postgres-config
+        fieldPaths:
+          - data.DATABASE_HOST
 images:
-- name: BROADCASTER_IMAGE
-  newName: europe-north1-docker.pkg.dev/dwk-gke-501808/docker-images/broadcaster
-  newTag: main-35c4b3ff14f5d516ba87edb949db7031ba98a965
-- name: TODO_APP_IMAGE
-  newName: europe-north1-docker.pkg.dev/dwk-gke-501808/docker-images/todo-app
-  newTag: main-35c4b3ff14f5d516ba87edb949db7031ba98a965
-- name: TODO_BACKEND_IMAGE
-  newName: europe-north1-docker.pkg.dev/dwk-gke-501808/docker-images/todo-backend
-  newTag: main-35c4b3ff14f5d516ba87edb949db7031ba98a965
+  - name: BROADCASTER_IMAGE
+    newName: europe-north1-docker.pkg.dev/dwk-gke-501808/docker-images/broadcaster
+    newTag: main-35c4b3ff14f5d516ba87edb949db7031ba98a965
+  - name: TODO_APP_IMAGE
+    newName: europe-north1-docker.pkg.dev/dwk-gke-501808/docker-images/todo-app
+    newTag: main-35c4b3ff14f5d516ba87edb949db7031ba98a965
+  - name: TODO_BACKEND_IMAGE
+    newName: europe-north1-docker.pkg.dev/dwk-gke-501808/docker-images/todo-backend
+    newTag: main-35c4b3ff14f5d516ba87edb949db7031ba98a965
 namespace: staging
 namePrefix: stag-
