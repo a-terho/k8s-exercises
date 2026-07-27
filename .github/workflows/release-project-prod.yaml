@@ -93,6 +93,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          ref: main # update file on main branch
 
       - name: Set up Kustomize
         uses: imranismail/setup-kustomize@v3
@@ -110,3 +112,4 @@ jobs:
           cwd: './project-gke/production'
           add: 'kustomization.yaml'
           message: New version of project released ${{ github.sha }}
+          push: origin main # push to the main branch
