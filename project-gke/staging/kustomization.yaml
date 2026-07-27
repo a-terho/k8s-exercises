@@ -1,38 +1,38 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - namespace.yml
-  - ./../base
-replacements: # replace endpoint addresses to point to correct service names
-  - source:
-      kind: Service
-      name: postgres-svc
-      fieldPath: metadata.name
-    targets:
-      - select:
-          kind: ConfigMap
-          name: postgres-config
-        fieldPaths:
-          - data.DATABASE_HOST
-  - source:
-      kind: Service
-      name: todo-backend-svc
-      fieldPath: metadata.name
-    targets:
-      - select:
-          kind: ConfigMap
-          name: backend-config
-        fieldPaths:
-          - data.BACKEND_HOST
+- namespace.yml
+- ./../base
+replacements:
+- source:
+    fieldPath: metadata.name
+    kind: Service
+    name: postgres-svc
+  targets:
+  - fieldPaths:
+    - data.DATABASE_HOST
+    select:
+      kind: ConfigMap
+      name: postgres-config
+- source:
+    fieldPath: metadata.name
+    kind: Service
+    name: todo-backend-svc
+  targets:
+  - fieldPaths:
+    - data.BACKEND_HOST
+    select:
+      kind: ConfigMap
+      name: backend-config
 images:
-  - name: BROADCASTER_IMAGE
-    newName: europe-north1-docker.pkg.dev/dwk-gke-501808/docker-images/broadcaster
-    newTag: main-35c4b3ff14f5d516ba87edb949db7031ba98a965
-  - name: TODO_APP_IMAGE
-    newName: europe-north1-docker.pkg.dev/dwk-gke-501808/docker-images/todo-app
-    newTag: main-35c4b3ff14f5d516ba87edb949db7031ba98a965
-  - name: TODO_BACKEND_IMAGE
-    newName: europe-north1-docker.pkg.dev/dwk-gke-501808/docker-images/todo-backend
-    newTag: main-35c4b3ff14f5d516ba87edb949db7031ba98a965
+- name: BROADCASTER_IMAGE
+  newName: europe-north1-docker.pkg.dev/dwk-gke-501808/docker-images/broadcaster
+  newTag: main-49c2ad80c0569e604b3f6e91fd24babf855e526f
+- name: TODO_APP_IMAGE
+  newName: europe-north1-docker.pkg.dev/dwk-gke-501808/docker-images/todo-app
+  newTag: main-49c2ad80c0569e604b3f6e91fd24babf855e526f
+- name: TODO_BACKEND_IMAGE
+  newName: europe-north1-docker.pkg.dev/dwk-gke-501808/docker-images/todo-backend
+  newTag: main-49c2ad80c0569e604b3f6e91fd24babf855e526f
 namespace: staging
 namePrefix: stag-
