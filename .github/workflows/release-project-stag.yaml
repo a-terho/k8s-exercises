@@ -85,6 +85,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-publish
 
+    # Use environment scoped variables and secrets
+    environment: GKE_PROJECT
+
     # Load required environment variables from previous job
     env:
       BROADCASTER_IMAGE: '${{ needs.build-publish.outputs.BROADCASTER_IMAGE }}'
