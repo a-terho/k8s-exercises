@@ -113,5 +113,5 @@ jobs:
         with:
           cwd: './overlays/production'
           add: 'kustomization.yaml'
-          message: New version of project-production released ${{ github.sha }}
+          message: New production version of project released
           push: origin main # push to the main branch

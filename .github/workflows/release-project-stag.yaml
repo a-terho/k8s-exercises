@@ -117,5 +117,5 @@ jobs:
         with:
           cwd: './overlays/staging'
           add: 'kustomization.yaml'
-          message: New version of project-staging released ${{ github.sha }}
+          message: New staging version of project released
           push: origin main # push to the main branch
