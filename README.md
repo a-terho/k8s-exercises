@@ -57,4 +57,4 @@ Sisältönä Kubernetes-kurssin harjoitukset. Suurin osa tekstistä on englannik
 - [4.7. Baby steps to GitOps](https://github.com/a-terho/k8s-exercises/tree/4.7/log-output/argocd)
 - [4.8. The project, step 24](https://github.com/a-terho/k8s-exercises/tree/4.8/todo-app/argocd)
 - [4.9. The project, step 25](https://github.com/a-terho/k8s-exercises/tree/4.9/project-gke)
-- [4.10. The project, the grande finale](https://github.com/a-terho/k8s-exercises-gitops)
+- [4.10. The project, the grande finale](https://github.com/a-terho/k8s-exercises-gitops/tree/4.10)

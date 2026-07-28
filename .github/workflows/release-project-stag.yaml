@@ -3,10 +3,10 @@ name: Release project (staging)
 on:
   push:
     branches: ['main']
-    # paths:
-    #   - 'broadcaster/**'
-    #   - 'todo-app/**'
-    #   - 'todo-backend/**'
+    paths:
+      - 'broadcaster/**'
+      - 'todo-app/**'
+      - 'todo-backend/**'
 
 env:
   REGISTRY: europe-north1-docker.pkg.dev
