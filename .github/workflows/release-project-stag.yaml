@@ -64,21 +64,21 @@ jobs:
 
       - name: Build broadcaster
         working-directory: broadcaster
-        run: docker build --tag "$BROADCASTER_TAG" .
+        run: docker build --tag "$BROADCASTER_IMAGE:$RELEASE_TAG" .
 
       - name: Build todo-app
         working-directory: todo-app
-        run: docker build --tag "$APP_TAG" .
+        run: docker build --tag "$TODO_APP_IMAGE:$RELEASE_TAG" .
 
       - name: Build todo-backend
         working-directory: todo-backend
-        run: docker build --tag "$BACKEND_TAG" .
+        run: docker build --tag "$TODO_BACKEND_IMAGE:$RELEASE_TAG" .
 
       - name: Publish all
         run: |-
-          docker push "$BROADCASTER_TAG"
-          docker push "$APP_TAG"
-          docker push "$BACKEND_TAG"
+          docker push "$BROADCASTER_IMAGE:$RELEASE_TAG"
+          docker push "$TODO_APP_IMAGE:$RELEASE_TAG"
+          docker push "$TODO_BACKEND_IMAGE:$RELEASE_TAG"
 
   update-kustomization:
     name: Update kustomization.yaml
