@@ -104,9 +104,9 @@ jobs:
       - name: Modify kustomization.yaml to use right images
         working-directory: overlays/production
         run: |-
-          kustomize edit set image "$BROADCASTER_IMAGE=$BROADCASTER_IMAGE:$RELEASE_TAG"
-          kustomize edit set image "$TODO_APP_IMAGE=$TODO_APP_IMAGE:$RELEASE_TAG"
-          kustomize edit set image "$TODO_BACKEND_IMAGE=$TODO_BACKEND_IMAGE:$RELEASE_TAG"
+          kustomize edit set image "$BROADCASTER_IMAGE:$RELEASE_TAG"
+          kustomize edit set image "$TODO_APP_IMAGE:$RELEASE_TAG"
+          kustomize edit set image "$TODO_BACKEND_IMAGE:$RELEASE_TAG"
 
       - name: Commit kustomization.yaml to GitHub
         uses: EndBug/add-and-commit@v10
