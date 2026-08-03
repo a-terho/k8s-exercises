@@ -1,9 +1,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - manifests-gke/serviceaccount.yml
-  - manifests-gke/clusterrole.yml
-  - manifests-gke/clusterrolebinding.yml
-  - manifests-gke/resourcedefinition.yml
-  - manifests-gke/dummysite.yml
-  - manifests-gke/ds-controller-dep.yml
+  - manifests/serviceaccount.yml
+  - manifests/clusterrole.yml
+  - manifests/clusterrolebinding.yml
+  - manifests/resourcedefinition.yml
+  - manifests/ds-controller-dep.yml

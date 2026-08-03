@@ -1,9 +1,9 @@
-import { coreApiClient, appApiClient } from './k8s.ts';
 import {
   ApiException,
   type KubernetesObject,
   type V1OwnerReference,
 } from '@kubernetes/client-node';
+import { coreApiClient, appApiClient } from './k8s.ts';
 import {
   buildConfigMap,
   buildDeployment,
@@ -20,7 +20,7 @@ const buildNames = (ds: DummySite) => {
   };
 };
 
-// owner references are used to resources get deleted when the parent gets deleted
+// owner references are used to garbage collect resources when the parent gets deleted
 function buildOwnerReference(ds: DummySite): V1OwnerReference {
   return {
     apiVersion: ds.apiVersion,
@@ -42,11 +42,13 @@ const upsert = async <T extends KubernetesObject>(
     await createFn();
   } catch (err) {
     // If the resource already exists, it throws HTTP status 409
-    // In order for update to work, Kubenetes expect to get latest
-    // resourceVersion along with the requests so that it is accepted
+    // In order for update to work, Kubenetes expects to get latest
+    // resourceVersion along with the request so that it is accepted
     if (err instanceof ApiException && err.code === 409) {
       const prev = await getFn();
       await replaceFn(prev.metadata?.resourceVersion);
+    } else {
+      throw err;
     }
   }
 };
@@ -55,27 +57,24 @@ export const prepareDummySite = async (ds: DummySite) => {
   const response = await fetch(ds.spec.website_url);
   const html = await response.text();
 
-  console.log(ds);
-
   const namespace = ds.metadata.namespace;
   const names = buildNames(ds);
   const ownerReference = buildOwnerReference(ds);
 
-  // TODO: This is not created in the cluster properly?
   // First, generate the HTML file for the deployment
   const configMap = buildConfigMap(namespace, names, ownerReference, html);
   await upsert(
-    () =>
+    async () =>
       coreApiClient.createNamespacedConfigMap({
         namespace,
         body: configMap,
       }),
-    () =>
+    async () =>
       coreApiClient.readNamespacedConfigMap({
         namespace,
         name: names.configMapName,
       }),
-    (resourceVersion) => {
+    async (resourceVersion) => {
       return coreApiClient.replaceNamespacedConfigMap({
         namespace,
         name: names.configMapName,
@@ -93,17 +92,17 @@ export const prepareDummySite = async (ds: DummySite) => {
   // Second, generate a deployment using nginx to serve the HTML
   const deployment = buildDeployment(namespace, names, ownerReference);
   await upsert(
-    () =>
+    async () =>
       appApiClient.createNamespacedDeployment({
         namespace,
         body: deployment,
       }),
-    () =>
+    async () =>
       appApiClient.readNamespacedDeployment({
         namespace,
         name: names.deploymentName,
       }),
-    (resourceVersion) =>
+    async (resourceVersion) =>
       appApiClient.replaceNamespacedDeployment({
         namespace,
         name: names.deploymentName,
@@ -120,17 +119,17 @@ export const prepareDummySite = async (ds: DummySite) => {
   // Third, create a LoadBalancer service to allow users to reach the HTML page
   const loadBalancer = buildLoadBalancer(namespace, names, ownerReference);
   await upsert(
-    () =>
+    async () =>
       coreApiClient.createNamespacedService({
         namespace,
         body: loadBalancer,
       }),
-    () =>
+    async () =>
       coreApiClient.readNamespacedService({
         namespace,
         name: names.serviceName,
       }),
-    (resourceVersion) =>
+    async (resourceVersion) =>
       coreApiClient.replaceNamespacedService({
         namespace,
         name: names.serviceName,

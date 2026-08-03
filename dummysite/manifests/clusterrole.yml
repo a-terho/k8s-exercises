@@ -5,10 +5,19 @@ metadata:
 rules:
   - apiGroups: ['']
     resources: ['configmaps', 'services']
-    verbs: ['get', 'create', 'update']
+    verbs:
+      - get
+      - create
+      - update
   - apiGroups: ['apps']
     resources: ['deployments', 'services']
-    verbs: ['get', 'create', 'update']
+    verbs:
+      - get
+      - create
+      - update
   - apiGroups: ['dwk.stable']
     resources: ['dummysites']
-    verbs: ['get', 'list', 'watch']
+    verbs:
+      - get
+      - list
+      - watch

@@ -15,4 +15,4 @@ spec:
       serviceAccountName: ds-controller-account
       containers:
         - name: dummysite-controller
-          image: alterho/ds-controller:5.1
+          image: alterho/ds-controller:5.1.0
