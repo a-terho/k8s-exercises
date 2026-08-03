@@ -1,0 +1,6 @@
+apiVersion: dwk.stable/v1
+kind: DummySite
+metadata:
+  name: k8s-dummysite
+spec:
+  website_url: https://fi.wikipedia.org/wiki/Helsinki
