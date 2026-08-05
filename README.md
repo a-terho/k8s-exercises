@@ -62,3 +62,4 @@ Sisältönä Kubernetes-kurssin harjoitukset. Suurin osa tekstistä on englannik
 ## Chapter 6
 
 - [5.1. DIY CRD & Controller](https://github.com/a-terho/k8s-exercises/tree/5.1/dummysite)
+- [5.2. Getting started with Istio service mesh](https://github.com/a-terho/k8s-exercises/tree/5.2/istio)
