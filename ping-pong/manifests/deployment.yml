@@ -13,13 +13,9 @@ spec:
       labels:
         app: ping-pong
     spec:
-      volumes:
-        - name: persistent-files
-          persistentVolumeClaim:
-            claimName: local-volume1-claim
       containers:
         - name: ping-pong
-          image: alterho/ping-pong:2.7
+          image: alterho/ping-pong:5.3
           env:
             - name: PORT
               value: '3001'
@@ -31,7 +27,3 @@ spec:
                 secretKeyRef:
                   name: postgres-secret
                   key: POSTGRES_PASSWORD
-          volumeMounts:
-            - name: persistent-files
-              mountPath: /usr/src/app/files
-              subPath: ping-pong
