@@ -63,3 +63,4 @@ Sisältönä Kubernetes-kurssin harjoitukset. Suurin osa tekstistä on englannik
 
 - [5.1. DIY CRD & Controller](https://github.com/a-terho/k8s-exercises/tree/5.1/dummysite)
 - [5.2. Getting started with Istio service mesh](https://github.com/a-terho/k8s-exercises/tree/5.2/istio)
+- [5.3. Log app, the Service Mesh Edition](https://github.com/a-terho/k8s-exercises/tree/5.3/greeter)

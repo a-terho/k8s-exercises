@@ -21,7 +21,7 @@ spec:
               value: '3001'
             - name: DATABASE_HOST
               # format is stateful-set.parent-service.namespace.svc.cluster.local
-              value: 'postgres-ss-0.postgres-svc.exercises.svc.cluster.local'
+              value: 'postgres-svc.exercises'
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:

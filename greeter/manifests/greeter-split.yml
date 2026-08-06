@@ -1,0 +1,22 @@
+# Specs for Istio's Gateway API implementation for traffic shifting here
+# https://istio.io/latest/docs/tasks/traffic-management/traffic-shifting/#apply-weight-based-routing
+
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: greeter-split
+  namespace: exercises
+spec:
+  parentRefs:
+    - group: ''
+      kind: Service
+      name: greeter-svc
+      port: 2345
+  rules:
+    - backendRefs:
+        - name: greeter-svc-1
+          port: 2345
+          weight: 75
+        - name: greeter-svc-2
+          port: 2345
+          weight: 25

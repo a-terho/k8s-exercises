@@ -24,12 +24,12 @@ spec:
                 path: 'information.txt' # file name it maps to
       containers:
         - name: log-output-write
-          image: alterho/log-output:5.3-write
+          image: alterho/log-output:5.3.0-write
           volumeMounts:
             - name: shared-tmp-files
               mountPath: /usr/src/app/tmp
         - name: log-output-read
-          image: alterho/log-output:5.3-read
+          image: alterho/log-output:5.3.0-read
           volumeMounts:
             - name: shared-tmp-files
               mountPath: /usr/src/app/tmp

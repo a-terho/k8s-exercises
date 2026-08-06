@@ -6,6 +6,8 @@ const express = require('express');
 const app = express();
 
 const pingsEndpoint = 'http://ping-pong-svc:2345/pings';
+const greetingEndpoint = 'http://greeter-svc:2345';
+
 const logFilePath = path.join('/', 'usr', 'src', 'app', 'tmp', 'app.log');
 const informationFilePath = path.join(
   '/',
@@ -19,11 +21,28 @@ const informationFilePath = path.join(
 const getPings = async () => {
   try {
     const res = await fetch(pingsEndpoint);
-    if (res.ok) {
-      return res.text();
+    if (!res.ok) {
+      // status code was not 2**
+      return '<request error>';
     }
-    // status code was not 2**
-    return '<request error>';
+    return res.text();
+  } catch (err) {
+    // fetch throws on DNS resolution errors
+    if (err.cause?.code === 'ENOTFOUND') {
+      return '<service unavailable>';
+    }
+    return '<connection error>';
+  }
+};
+
+const getGreeting = async () => {
+  try {
+    const res = await fetch(greetingEndpoint);
+    if (!res.ok) {
+      // status code was not 2**
+      return '<request error>';
+    }
+    return res.text();
   } catch (err) {
     // fetch throws on DNS resolution errors
     if (err.cause?.code === 'ENOTFOUND') {
@@ -49,11 +68,12 @@ app.get('/', async (_req, res) => {
   try {
     // fetch ping-pong app, read configurations and generate dynamic content
     const pingpong = await getPings();
+    const greeting = await getGreeting();
     const fileContent = await fs.readFile(informationFilePath, 'utf8');
     const timestamp = new Date().toISOString();
     const uuid = crypto.randomUUID();
 
-    const content = `file content: ${fileContent}\nenv variable: MESSAGE=${process.env.MESSAGE}\n${timestamp}: ${uuid}\nPing / Pongs: ${pingpong}`;
+    const content = `file content: ${fileContent}\nenv variable: MESSAGE=${process.env.MESSAGE}\n${timestamp}: ${uuid}\ngreeting: ${greeting}\nPing / Pongs: ${pingpong}`;
 
     res.set('Content-Type', 'text/plain');
     return res.status(200).send(content);

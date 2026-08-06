@@ -4,7 +4,7 @@ To run the application, make sure local `k3d` cluster is up and running and prep
 
 ```bash
 # Create k3d cluster
-k3d cluster create k3s-istio --port 8080:80@loadbalancer --agents 2 --k3s-arg '--disable=traefik@server:*' --image docker.io/rancher/k3s:v1.32.2-k3s1
+k3d cluster create istio --port 8080:80@loadbalancer --agents 2 --k3s-arg '--disable=traefik@server:*' --image docker.io/rancher/k3s:v1.32.2-k3s1
 
 # Enable Gateway API in the cluster
 kubectl apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.1/experimental-install.yaml
@@ -26,7 +26,7 @@ To check that the pod is running all containers, use:
 kubectl logs -f deployment/log-output-dep --all-containers=true --namespace=exercises
 ```
 
-The logs should have printed `Server running at port 3000` and there should a stream of timestamps. The endpoint displays the amount of pongs sent by **ping-pong** application along with timestamp-string header and values loaded from ConfigMaps. If the **ping-pong** is not running, the page will display `<service unavailable>`. [http://localhost:8080/log](http://localhost:8080/log) shows the temporary log file the pod creates.
+The logs should have printed `Server running at port 3000` and there should a stream of timestamps. The endpoint at [http://localhost:8080](http://localhost:8080) displays the amount of pongs sent by **ping-pong** application along with timestamp-string header and values loaded from ConfigMaps. If the **ping-pong** is not running, the page will display `<service unavailable>`. [http://localhost:8080/log](http://localhost:8080/log) shows the temporary log file the pod creates.
 
 ---
 

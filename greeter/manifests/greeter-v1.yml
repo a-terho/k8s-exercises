@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: greeter-v1-dep
+  namespace: exercises
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: greeter
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: greeter
+        version: v1
+    spec:
+      containers:
+        - name: greeter
+          image: alterho/greeter:v1
+          env:
+            - name: PORT
+              value: '3000'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: greeter-svc-1
+  namespace: exercises
+spec:
+  type: ClusterIP
+  selector:
+    app: greeter
+    version: v1
+  ports:
+    - protocol: TCP
+      port: 2345
+      targetPort: 3000
