@@ -11,8 +11,8 @@ resources:
 images:
 - name: LOGREAD_APP_IMAGE
   newName: alterho/log-output
-  newTag: main-read-76da07d790589183b4fe86522495c6c3200bd0fc
+  newTag: main-read-b63d5cc5e8b1da8a7182427b282779706d30a281
 - name: LOGWRITE_APP_IMAGE
   newName: alterho/log-output
-  newTag: main-write-76da07d790589183b4fe86522495c6c3200bd0fc
+  newTag: main-write-b63d5cc5e8b1da8a7182427b282779706d30a281
 namespace: exercises
