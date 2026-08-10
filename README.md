@@ -67,3 +67,4 @@ Sisältönä Kubernetes-kurssin harjoitukset. Suurin osa tekstistä on englannik
 - [5.4. Wikipedia with init and sidecar](https://github.com/a-terho/k8s-exercises/tree/5.4/copypedia)
 - [5.5. Platform comparison](https://github.com/a-terho/k8s-exercises/tree/5.5/platform-comparison.md)
 - [5.6. Trying serverless](https://github.com/a-terho/k8s-exercises/tree/5.6/knative-demo)
+- [5.7. Deploy to serverless](https://github.com/a-terho/k8s-exercises/tree/5.7/ping-pong/README-knative.md)

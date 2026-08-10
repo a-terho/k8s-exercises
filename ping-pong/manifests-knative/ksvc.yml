@@ -1,0 +1,21 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: ping-pong-svc
+  namespace: exercises
+spec:
+  template:
+    spec:
+      containers:
+        - image: alterho/ping-pong:5.3
+          ports:
+            - containerPort: 3001
+          env:
+            # ports.containerPort is mapped to environment variable PORT by Knative
+            - name: DATABASE_HOST
+              value: 'postgres-svc.exercises'
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD

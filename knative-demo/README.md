@@ -1,5 +1,7 @@
 # Knative
 
+## Section 1: Prepare Knative
+
 Rundown of preparation steps for [exercise 5.6](https://courses.mooc.fi/org/uh-cs/courses/devops-with-kubernetes-2026/chapter-6/beyond-kubernetes#eed28841-4bc5-5f24-a96f-fdefe99a092f).
 
 Prepare `k3d` cluster. Notice port forwarding from localhost:80 to loadbalancer:80.
@@ -28,7 +30,7 @@ kubectl patch configmap/config-network \
 --patch '{"data":{"ingress-class":"kourier.ingress.networking.knative.dev"}}'
 ```
 
-Verify installation.
+Verify installation. Everything should be `Running`.
 
 ```bash
 kubectl get pods -n knative-serving
@@ -48,6 +50,8 @@ kubectl patch configmap config-domain \
   --type merge \
   --patch '{"data":{"127.0.0.1.sslip.io":""}}'
 ```
+
+## Section 2: Deploy application
 
 Deploy sample application.
 
