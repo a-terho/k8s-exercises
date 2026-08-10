@@ -1,4 +1,4 @@
-For a small developer Rancher is probably to get into.
+For a small developer Rancher is probably easier to get into.
 
 Rancher
 
