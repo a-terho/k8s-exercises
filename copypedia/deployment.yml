@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: copypedia-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: copypedia
+  template:
+    metadata:
+      labels:
+        app: copypedia
+    spec:
+      initContainers:
+        - name: init-download-page
+          image: curlimages/curl
+          volumeMounts:
+            - name: html
+              mountPath: /usr/share/nginx/html
+          command:
+            - sh
+            - -c
+            - curl -fsSL -o /usr/share/nginx/html/index.html https://en.wikipedia.org/wiki/Kubernetes
+        - name: sidecar-get-random-page
+          image: curlimages/curl
+          restartPolicy: Always
+          volumeMounts:
+            - name: html
+              mountPath: /usr/share/nginx/html
+          command:
+            - sh
+            - -c
+            - |
+              while true; do
+                SLEEP_DURATION=$(awk 'BEGIN{srand(); print int(300 + rand()*601)}')
+                SLEEP_MINUTES=$(( SLEEP_DURATION/60 ))
+                SLEEP_SEC_REM=$(( SLEEP_DURATION%60 ))
+                echo Sleeping for "$SLEEP_MINUTES"m "$SLEEP_SEC_REM"s
+                sleep "$SLEEP_DURATION"
+                echo Fetching new page
+                curl -fsSL -o /usr/share/nginx/html/index.html https://en.wikipedia.org/wiki/Special:Random
+              done
+      containers:
+        - name: copypedia
+          image: nginx:1.31
+          volumeMounts:
+            - name: html
+              mountPath: /usr/share/nginx/html
+              readOnly: true
+          resources:
+            requests:
+              memory: 20Mi
+              cpu: 10m
+            limits:
+              memory: 100Mi
+              cpu: 50m
+      volumes:
+        - name: html
+          emptyDir: {}
