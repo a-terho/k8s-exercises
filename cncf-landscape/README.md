@@ -1,6 +1,6 @@
-List of CNCF projects that...
+# CNCF projects that...
 
-1. I've used (red)
+## I've used (red)
 
 - **Helm** to install applicatios into Kubernetes clusters
 - **Docker Compose** to run small network of containerized services locally
@@ -23,7 +23,7 @@ List of CNCF projects that...
 - **Grafana** to query and display metrics data from the Kubernetes cluster
 - **Grafana Loki** to aggregate service log data from the Kubernetes cluster
 
-1. Are dependencies of the services I've used (pink)
+## Are dependencies of the services I've used (pink)
 
 - **redis** is used as cache layer by ArgoCD
 - **Envoy** based networking layer is used by **Contour** and Istio both of which in turn are used by Knative
